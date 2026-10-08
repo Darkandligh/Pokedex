@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" text="Pokédex"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ pokemon()?.nombre ?? 'Pokédex' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="contenedor">
+    @switch (estado().tipo) {
+      @case ('cargando') {
+        <div class="estado"><ion-spinner name="crescent"></ion-spinner></div>
+      }
+      @case ('error') {
+        <div class="estado">
+          <p class="mensaje">No se pudo conectar con la API de la Pokédex.</p>
+        </div>
+      }
+    }
+
+    @if (pokemon(); as p) {
+      <!-- CA1: número, nombre, imagen y descripción -->
+      <header class="encabezado">
+        <h1>{{ p.nombre }} <span class="numero">{{ p.numero | numeroPokedex }}</span></h1>
+      </header>
+
+      <div class="ficha">
+        <div class="imagen" [style.--color-tipo]="colorPrincipal()">
+          <img [src]="p.imagenUrl" [alt]="p.nombre" width="475" height="475" />
+        </div>
+
+        <div class="datos">
+          <p class="descripcion">{{ p.descripcion }}</p>
+
+          <!-- CA2: altura, peso, género, categoría y habilidad -->
+          <dl class="caracteristicas">
+            <div><dt>Altura</dt><dd>{{ p.altura | number: '1.1-1' }} m</dd></div>
+            <div><dt>Peso</dt><dd>{{ p.peso | number: '1.1-1' }} kg</dd></div>
+            <div><dt>Género</dt><dd>{{ p.genero }}</dd></div>
+            <div><dt>Categoría</dt><dd>{{ p.categoria }}</dd></div>
+            <div><dt>Habilidad</dt><dd>{{ p.habilidad }}</dd></div>
+          </dl>
+
+          <!-- CA2: tipos y debilidades -->
+          <section>
+            <h2>Tipo</h2>
+            <div class="etiquetas">
+              @for (tipo of p.tipos; track tipo.clave) {
+                <app-tipo-etiqueta [tipo]="tipo" />
+              }
+            </div>
+          </section>
+          <section>
+            <h2>Debilidad</h2>
+            <div class="etiquetas">
+              @for (tipo of p.debilidades; track tipo.clave) {
+                <app-tipo-etiqueta [tipo]="tipo" />
+              }
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- CA3: estadísticas base -->
+      <section class="tarjeta">
+        <h2>Estadísticas base</h2>
+        <ul class="estadisticas">
+          @for (e of estadisticas(); track e.nombre) {
+            <li>
+              <span class="etiqueta-estadistica">{{ e.nombre }}</span>
+              <span class="barra"><span class="relleno" [style.width.%]="e.porcentaje"></span></span>
+              <span class="valor">{{ e.valor }}</span>
+            </li>
+          }
+        </ul>
+      </section>
+    }
+  </div>
+</ion-content>
