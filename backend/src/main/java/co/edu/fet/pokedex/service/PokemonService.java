@@ -32,11 +32,23 @@ public class PokemonService {
         this.mapper = mapper;
     }
 
-    /** Listado de la Pokédex ordenado por número. */
-    public List<PokemonResumenDto> listar() {
-        return pokemonRepository.findAllByOrderByNumeroAsc().stream()
-                .map(mapper::aResumen)
-                .toList();
+    /**
+     * Listado de la Pokédex ordenado por número, filtrado opcionalmente.
+     *
+     * @param busqueda vacío: todos; solo dígitos ("1", "001", "0001"): ese número exacto;
+     *                 otro texto: nombres que lo contengan, sin distinguir mayúsculas
+     */
+    public List<PokemonResumenDto> listar(String busqueda) {
+        String texto = busqueda == null ? "" : busqueda.trim();
+        List<Pokemon> resultado;
+        if (texto.isEmpty()) {
+            resultado = pokemonRepository.findAllByOrderByNumeroAsc();
+        } else if (texto.matches("\\d{1,9}")) {
+            resultado = pokemonRepository.findById(Integer.parseInt(texto)).map(List::of).orElse(List.of());
+        } else {
+            resultado = pokemonRepository.findByNombreContainingIgnoreCaseOrderByNumeroAsc(texto);
+        }
+        return resultado.stream().map(mapper::aResumen).toList();
     }
 
     /** Ficha completa por número de la Pokédex. */

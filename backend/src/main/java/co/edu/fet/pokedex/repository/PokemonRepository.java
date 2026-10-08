@@ -13,5 +13,9 @@ public interface PokemonRepository extends JpaRepository<Pokemon, Integer> {
     @EntityGraph(attributePaths = "tipos")
     List<Pokemon> findAllByOrderByNumeroAsc();
 
+    /** Búsqueda parcial por nombre sin distinguir mayúsculas, ordenada por número. */
+    @EntityGraph(attributePaths = "tipos")
+    List<Pokemon> findByNombreContainingIgnoreCaseOrderByNumeroAsc(String nombre);
+
     Optional<Pokemon> findByNombreIgnoreCase(String nombre);
 }

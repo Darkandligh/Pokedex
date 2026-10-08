@@ -64,11 +64,37 @@ class PokemonServiceTest {
         squirtle.setTipos(List.of(agua));
         when(pokemonRepository.findAllByOrderByNumeroAsc()).thenReturn(List.of(charmander(), squirtle));
 
-        assertThat(servicio.listar())
+        assertThat(servicio.listar(null))
                 .extracting("numero", "nombre")
                 .containsExactly(org.assertj.core.groups.Tuple.tuple(4, "Charmander"),
                         org.assertj.core.groups.Tuple.tuple(7, "Squirtle"));
-        assertThat(servicio.listar().get(1).tipos()).extracting("nombre").containsExactly("Agua");
+        assertThat(servicio.listar("  ").get(1).tipos()).extracting("nombre").containsExactly("Agua");
+    }
+
+    @Test
+    void buscarPorNumeroAceptaCerosALaIzquierda() {
+        when(pokemonRepository.findById(4)).thenReturn(Optional.of(charmander()));
+
+        for (String busqueda : List.of("4", "004", "0004")) {
+            assertThat(servicio.listar(busqueda)).extracting("nombre").containsExactly("Charmander");
+        }
+    }
+
+    @Test
+    void buscarPorNombreUsaLaBusquedaParcial() {
+        when(pokemonRepository.findByNombreContainingIgnoreCaseOrderByNumeroAsc("char"))
+                .thenReturn(List.of(charmander()));
+
+        assertThat(servicio.listar(" char ")).extracting("nombre").containsExactly("Charmander");
+    }
+
+    @Test
+    void buscarSinCoincidenciasDevuelveListaVacia() {
+        when(pokemonRepository.findById(9999)).thenReturn(Optional.empty());
+        when(pokemonRepository.findByNombreContainingIgnoreCaseOrderByNumeroAsc("zzz")).thenReturn(List.of());
+
+        assertThat(servicio.listar("9999")).isEmpty();
+        assertThat(servicio.listar("zzz")).isEmpty();
     }
 
     @Test

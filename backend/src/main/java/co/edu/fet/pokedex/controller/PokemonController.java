@@ -6,6 +6,7 @@ import co.edu.fet.pokedex.service.PokemonService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,10 +24,13 @@ public class PokemonController {
         this.pokemonService = pokemonService;
     }
 
-    /** Listado de la Pokédex ordenado por número (HU-02). */
+    /**
+     * Listado de la Pokédex ordenado por número (HU-02); con q filtra por nombre
+     * parcial o por número (HU-03). Sin coincidencias devuelve una lista vacía.
+     */
     @GetMapping
-    public List<PokemonResumenDto> listar() {
-        return pokemonService.listar();
+    public List<PokemonResumenDto> listar(@RequestParam(name = "q", required = false) String q) {
+        return pokemonService.listar(q);
     }
 
     /** Ficha completa por número (HU-01). */

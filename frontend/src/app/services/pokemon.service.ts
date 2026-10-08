@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -13,9 +13,14 @@ export class PokemonService {
   private readonly http = inject(HttpClient);
   private readonly url = `${environment.apiUrl}/pokemon`;
 
-  /** Listado de la Pokédex ordenado por número. */
-  listar(): Observable<PokemonResumen[]> {
-    return this.http.get<PokemonResumen[]>(this.url);
+  /**
+   * Listado de la Pokédex ordenado por número.
+   * @param busqueda nombre (parcial) o número ("1", "001", "0001"); vacío devuelve todos
+   */
+  listar(busqueda = ''): Observable<PokemonResumen[]> {
+    const q = busqueda.trim();
+    const params = q ? new HttpParams().set('q', q) : undefined;
+    return this.http.get<PokemonResumen[]>(this.url, { params });
   }
 
   obtenerPorNumero(numero: number): Observable<PokemonDetalle> {

@@ -35,6 +35,18 @@ criterio. Marcar cada casilla en las dos columnas.
 | CA2 | Pulsar la tarjeta de Pikachu | Se abre la ficha de Pikachu N.º 0025 | ☐ | ☐ |
 | CA2 | En la ficha, pulsar «Pokédex» (volver) | Regresa al listado | ☐ | ☐ |
 
+## HU-03 · Buscar un Pokémon por nombre o número (SCRUM-11)
+
+| # | Paso | Resultado esperado | Navegador | Móvil |
+|---|------|--------------------|:---------:|:-----:|
+| CA1 | En el buscador escribir `char` | Aparecen Charmander, Charmeleon y Charizard | ☐ | ☐ |
+| CA1 | Escribir `PIKA` (mayúsculas) | Aparece Pikachu | ☐ | ☐ |
+| CA1 | Escribir `25`, luego `025` y luego `0025` | En los tres casos aparece solo Pikachu N.º 0025 | ☐ | ☐ |
+| CA1 | Pulsar el resultado | Se abre su ficha | ☐ | ☐ |
+| CA2 | Escribir `xyz` | Mensaje «No se encontraron Pokémon» | ☐ | ☐ |
+| CA2 | Escribir `9999` | Mensaje «No se encontraron Pokémon» | ☐ | ☐ |
+| — | Borrar el texto del buscador | Vuelve el listado completo | ☐ | ☐ |
+
 ## Comprobaciones generales
 
 | Paso | Resultado esperado | Navegador | Móvil |

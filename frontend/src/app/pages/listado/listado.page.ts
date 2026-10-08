@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Component, inject, signal } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { IonContent, IonHeader, IonSpinner, IonTitle, IonToolbar } from '@ionic/angular';
-import { Observable, catchError, map, of, startWith } from 'rxjs';
+import { IonContent, IonHeader, IonSearchbar, IonSpinner, IonTitle, IonToolbar } from '@ionic/angular';
+import { Observable, catchError, distinctUntilChanged, map, of, startWith, switchMap } from 'rxjs';
 
 import { PokemonResumen } from '../../models/pokemon.model';
 import { PokemonService } from '../../services/pokemon.service';
@@ -14,22 +14,52 @@ type EstadoListado =
   | { tipo: 'ok'; pokemon: PokemonResumen[] }
   | { tipo: 'error' };
 
+/** Mensaje exacto del criterio de aceptación CA2 de la HU-03. */
+export const MENSAJE_SIN_RESULTADOS = 'No se encontraron Pokémon';
+
 /**
- * Listado de la Pokédex (HU-02): Pokémon ordenados por número; al seleccionar uno se abre su ficha.
+ * Listado de la Pokédex (HU-02) con buscador por nombre o número (HU-03).
  */
 @Component({
   selector: 'app-listado',
   templateUrl: 'listado.page.html',
   styleUrls: ['listado.page.scss'],
-  imports: [IonContent, IonHeader, IonSpinner, IonTitle, IonToolbar, NumeroPokedexPipe, RouterLink, TipoEtiquetaComponent],
+  imports: [
+    IonContent,
+    IonHeader,
+    IonSearchbar,
+    IonSpinner,
+    IonTitle,
+    IonToolbar,
+    NumeroPokedexPipe,
+    RouterLink,
+    TipoEtiquetaComponent,
+  ],
 })
 export class ListadoPage {
   private readonly pokemonService = inject(PokemonService);
 
-  protected readonly estado = toSignal(this.cargar(), { initialValue: { tipo: 'cargando' } as EstadoListado });
+  /** Texto del buscador (el ion-searchbar ya aplica la espera entre teclas). */
+  protected readonly busqueda = signal('');
 
-  private cargar(): Observable<EstadoListado> {
-    return this.pokemonService.listar().pipe(
+  protected readonly estado = toSignal(
+    toObservable(this.busqueda).pipe(
+      map((texto) => texto.trim()),
+      distinctUntilChanged(),
+      switchMap((texto) => this.cargar(texto)),
+    ),
+    { initialValue: { tipo: 'cargando' } as EstadoListado },
+  );
+
+  protected readonly mensajeSinResultados = MENSAJE_SIN_RESULTADOS;
+
+  protected buscar(evento: Event): void {
+    const valor = (evento as CustomEvent<{ value?: string | null }>).detail?.value ?? '';
+    this.busqueda.set(valor);
+  }
+
+  private cargar(texto: string): Observable<EstadoListado> {
+    return this.pokemonService.listar(texto).pipe(
       map((pokemon): EstadoListado => ({ tipo: 'ok', pokemon })),
       catchError(() => of<EstadoListado>({ tipo: 'error' })),
       startWith<EstadoListado>({ tipo: 'cargando' }),
