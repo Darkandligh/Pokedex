@@ -13,6 +13,12 @@
       @case ('cargando') {
         <div class="estado"><ion-spinner name="crescent"></ion-spinner></div>
       }
+      <!-- HU-01 CA4 -->
+      @case ('no-encontrado') {
+        <div class="estado">
+          <p class="mensaje" data-prueba="no-encontrado">{{ mensajeNoEncontrado }}</p>
+        </div>
+      }
       @case ('error') {
         <div class="estado">
           <p class="mensaje">No se pudo conectar con la API de la Pokédex.</p>
@@ -75,6 +81,37 @@
             </li>
           }
         </ul>
+      </section>
+
+      <!-- CA3: cadena evolutiva con enlace a cada Pokémon -->
+      <section class="tarjeta">
+        <h2>Evoluciones</h2>
+        @if (etapasEvolucion().length > 1) {
+          <ol class="cadena">
+            @for (etapa of etapasEvolucion(); track $index) {
+              <li class="etapa">
+                @for (evolucion of etapa; track evolucion.numero) {
+                  @if (evolucion.disponible) {
+                    <a class="eslabon" [class.actual]="evolucion.numero === p.numero"
+                       [routerLink]="['/pokemon', evolucion.numero]">
+                      <img [src]="evolucion.imagenUrl" [alt]="evolucion.nombre" width="96" height="96" loading="lazy" />
+                      <span class="nombre">{{ evolucion.nombre }}</span>
+                      <span class="numero">{{ evolucion.numero | numeroPokedex }}</span>
+                    </a>
+                  } @else {
+                    <span class="eslabon no-disponible" title="Este Pokémon no está en la Pokédex importada">
+                      <img [src]="evolucion.imagenUrl" [alt]="evolucion.nombre" width="96" height="96" loading="lazy" />
+                      <span class="nombre">{{ evolucion.nombre }}</span>
+                      <span class="numero">{{ evolucion.numero | numeroPokedex }}</span>
+                    </span>
+                  }
+                }
+              </li>
+            }
+          </ol>
+        } @else {
+          <p>Este Pokémon no evoluciona.</p>
+        }
       </section>
     }
   </div>

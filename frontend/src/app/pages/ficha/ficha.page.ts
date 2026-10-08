@@ -1,6 +1,8 @@
 import { DecimalPipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, inject, input } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import {
   IonBackButton,
   IonButtons,
@@ -12,7 +14,7 @@ import {
 } from '@ionic/angular';
 import { Observable, catchError, map, of, startWith, switchMap } from 'rxjs';
 
-import { PokemonDetalle } from '../../models/pokemon.model';
+import { Evolucion, PokemonDetalle } from '../../models/pokemon.model';
 import { PokemonService } from '../../services/pokemon.service';
 import { colorTipo } from '../../shared/colores-tipo';
 import { NumeroPokedexPipe } from '../../shared/numero-pokedex.pipe';
@@ -21,7 +23,11 @@ import { TipoEtiquetaComponent } from '../../shared/tipo-etiqueta.component';
 type EstadoFicha =
   | { tipo: 'cargando' }
   | { tipo: 'ok'; pokemon: PokemonDetalle }
+  | { tipo: 'no-encontrado' }
   | { tipo: 'error' };
+
+/** Mensaje exacto del criterio de aceptación CA4 de la HU-01. */
+export const MENSAJE_NO_ENCONTRADO = 'Pokémon no encontrado';
 
 /** Valor máximo de referencia para dibujar las barras de estadísticas. */
 const MAXIMO_ESTADISTICA = 255;
@@ -44,6 +50,7 @@ const MAXIMO_ESTADISTICA = 255;
     IonTitle,
     IonToolbar,
     NumeroPokedexPipe,
+    RouterLink,
     TipoEtiquetaComponent,
   ],
 })
@@ -84,6 +91,17 @@ export class FichaPage {
     }));
   });
 
+  /** Cadena evolutiva agrupada por etapa (base → evoluciones), para mostrar ramificaciones. */
+  protected readonly etapasEvolucion = computed(() => {
+    const etapas: Evolucion[][] = [];
+    for (const evolucion of this.pokemon()?.cadenaEvolutiva ?? []) {
+      (etapas[evolucion.etapa] ??= []).push(evolucion);
+    }
+    return etapas.filter((etapa) => etapa?.length);
+  });
+
+  protected readonly mensajeNoEncontrado = MENSAJE_NO_ENCONTRADO;
+
   private cargar(id: string): Observable<EstadoFicha> {
     const texto = (id ?? '').trim();
     const consulta = /^\d+$/.test(texto)
@@ -91,7 +109,13 @@ export class FichaPage {
       : this.pokemonService.obtenerPorNombre(texto);
     return consulta.pipe(
       map((pokemon): EstadoFicha => ({ tipo: 'ok', pokemon })),
-      catchError(() => of<EstadoFicha>({ tipo: 'error' })),
+      catchError((error: unknown) =>
+        of<EstadoFicha>(
+          error instanceof HttpErrorResponse && error.status === 404
+            ? { tipo: 'no-encontrado' }
+            : { tipo: 'error' },
+        ),
+      ),
       startWith<EstadoFicha>({ tipo: 'cargando' }),
     );
   }
