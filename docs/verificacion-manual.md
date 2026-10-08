@@ -6,7 +6,7 @@ criterio. Marcar cada casilla en las dos columnas.
 ## Preparación
 
 1. Levantar el backend (`cd backend` y `mvnw spring-boot:run`). La primera vez importa los
-   151 Pokémon desde PokéAPI (2 a 3 minutos); esperar el mensaje «Importación terminada».
+   151 Pokémon desde PokéAPI (1 a 2 minutos); esperar el mensaje «Importación terminada».
 2. Levantar el frontend (`cd frontend` y `ionic serve --external`).
 3. **Navegador:** abrir `http://localhost:8100`.
 4. **Celular:** conectarlo a la misma red wifi que el computador y abrir

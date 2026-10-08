@@ -30,7 +30,3 @@ coverage/
 .factorypath
 .DS_Store
 Thumbs.db
-
-# ===== Asistente =====
-CLAUDE.md
-.claude/
