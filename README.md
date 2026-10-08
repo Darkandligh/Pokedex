@@ -139,3 +139,31 @@ backend/   API REST (controller → service → repository, DTOs, importador de 
 frontend/  App Ionic (páginas listado y ficha, servicio de la API)
 docs/      Lista de verificación manual
 ```
+
+## Flujo de trabajo con ramas
+
+| Rama | Para qué | Cómo recibe cambios |
+|------|----------|---------------------|
+| `main` | Producción: la versión entregada | Solo por Pull Request desde `develop`, con aprobación |
+| `develop` | Integración y validación | Solo por Pull Request desde una rama de tarea, con aprobación |
+| `feature/...` | Una rama por tarea o historia | Libre: cada quien trabaja en la suya |
+
+`main` y `develop` están protegidas: no se puede subir directo a ellas, ni hacer *force push*, ni borrarlas.
+
+**Para trabajar en una tarea:**
+
+```bash
+git switch develop
+git pull                                   # traer lo último de develop
+git switch -c feature/hu-04-nombre-corto   # crear la rama de la tarea
+# ... hacer cambios ...
+git add .
+git commit -m "SCRUM-XX descripción del cambio"
+git push -u origin feature/hu-04-nombre-corto
+```
+
+Luego, en GitHub, abrir un **Pull Request** de `feature/hu-04-nombre-corto` hacia `develop`.
+Antes de abrirlo, correr las pruebas (ver [Pruebas automáticas](#pruebas-automáticas)) y verificar que pasan.
+
+**Nombres de rama:** `feature/hu-XX-descripcion` para historias nuevas y `fix/descripcion` para
+corregir errores. En minúsculas, con guiones y sin tildes.
