@@ -1,0 +1,90 @@
+{
+  "tipos": [
+    { "clave": "grass", "nombre": "Planta" },
+    { "clave": "poison", "nombre": "Veneno" },
+    { "clave": "fire", "nombre": "Fuego" },
+    { "clave": "flying", "nombre": "Volador" },
+    { "clave": "water", "nombre": "Agua" },
+    { "clave": "ice", "nombre": "Hielo" },
+    { "clave": "psychic", "nombre": "Psíquico" },
+    { "clave": "ground", "nombre": "Tierra" },
+    { "clave": "rock", "nombre": "Roca" },
+    { "clave": "electric", "nombre": "Eléctrico" }
+  ],
+  "pokemon": [
+    {
+      "numero": 1, "nombre": "Bulbasaur",
+      "descripcion": "Una rara semilla le fue plantada en el lomo al nacer. La planta brota y crece con este Pokémon.",
+      "altura": 0.7, "peso": 6.9, "genero": "Macho y hembra", "categoria": "Semilla", "habilidad": "Espesura",
+      "estadisticas": [45, 49, 49, 65, 65, 45],
+      "tipos": ["grass", "poison"], "debilidades": ["flying", "fire", "psychic", "ice"], "cadenaEvolutivaId": 1
+    },
+    {
+      "numero": 2, "nombre": "Ivysaur",
+      "descripcion": "Cuando le crece bastante el bulbo del lomo, pierde la capacidad de erguirse sobre sus patas traseras.",
+      "altura": 1.0, "peso": 13.0, "genero": "Macho y hembra", "categoria": "Semilla", "habilidad": "Espesura",
+      "estadisticas": [60, 62, 63, 80, 80, 60],
+      "tipos": ["grass", "poison"], "debilidades": ["flying", "fire", "psychic", "ice"], "cadenaEvolutivaId": 1
+    },
+    {
+      "numero": 3, "nombre": "Venusaur",
+      "descripcion": "La planta florece cuando absorbe energía solar. Esto le obliga a buscar siempre la luz del sol.",
+      "altura": 2.0, "peso": 100.0, "genero": "Macho y hembra", "categoria": "Semilla", "habilidad": "Espesura",
+      "estadisticas": [80, 82, 83, 100, 100, 80],
+      "tipos": ["grass", "poison"], "debilidades": ["flying", "fire", "psychic", "ice"], "cadenaEvolutivaId": 1
+    },
+    {
+      "numero": 4, "nombre": "Charmander",
+      "descripcion": "Prefiere las cosas calientes. Dicen que cuando llueve le sale vapor de la punta de la cola.",
+      "altura": 0.6, "peso": 8.5, "genero": "Macho y hembra", "categoria": "Lagartija", "habilidad": "Mar Llamas",
+      "estadisticas": [39, 52, 43, 60, 50, 65],
+      "tipos": ["fire"], "debilidades": ["ground", "rock", "water"], "cadenaEvolutivaId": 2
+    },
+    {
+      "numero": 5, "nombre": "Charmeleon",
+      "descripcion": "Este Pokémon de naturaleza agresiva ataca con su cola llameante y hace trizas al rival con sus afiladas garras.",
+      "altura": 1.1, "peso": 19.0, "genero": "Macho y hembra", "categoria": "Llama", "habilidad": "Mar Llamas",
+      "estadisticas": [58, 64, 58, 80, 65, 80],
+      "tipos": ["fire"], "debilidades": ["ground", "rock", "water"], "cadenaEvolutivaId": 2
+    },
+    {
+      "numero": 6, "nombre": "Charizard",
+      "descripcion": "Escupe un fuego tan caliente que funde las rocas. Causa incendios forestales sin querer.",
+      "altura": 1.7, "peso": 90.5, "genero": "Macho y hembra", "categoria": "Llama", "habilidad": "Mar Llamas",
+      "estadisticas": [78, 84, 78, 109, 85, 100],
+      "tipos": ["fire", "flying"], "debilidades": ["rock", "water", "electric"], "cadenaEvolutivaId": 2
+    },
+    {
+      "numero": 7, "nombre": "Squirtle",
+      "descripcion": "Cuando retrae su largo cuello en el caparazón, dispara agua a una presión increíble.",
+      "altura": 0.5, "peso": 9.0, "genero": "Macho y hembra", "categoria": "Tortuguita", "habilidad": "Torrente",
+      "estadisticas": [44, 48, 65, 50, 64, 43],
+      "tipos": ["water"], "debilidades": ["grass", "electric"], "cadenaEvolutivaId": 3
+    },
+    {
+      "numero": 8, "nombre": "Wartortle",
+      "descripcion": "Se lo considera un símbolo de longevidad. Los ejemplares más ancianos tienen musgo sobre el caparazón.",
+      "altura": 1.0, "peso": 22.5, "genero": "Macho y hembra", "categoria": "Tortuga", "habilidad": "Torrente",
+      "estadisticas": [59, 63, 80, 65, 80, 58],
+      "tipos": ["water"], "debilidades": ["grass", "electric"], "cadenaEvolutivaId": 3
+    },
+    {
+      "numero": 9, "nombre": "Blastoise",
+      "descripcion": "Para acabar con su enemigo, lo aplasta con el peso de su cuerpo. En momentos de apuro, se esconde en el caparazón.",
+      "altura": 1.6, "peso": 85.5, "genero": "Macho y hembra", "categoria": "Marisco", "habilidad": "Torrente",
+      "estadisticas": [79, 83, 100, 85, 105, 78],
+      "tipos": ["water"], "debilidades": ["grass", "electric"], "cadenaEvolutivaId": 3
+    }
+  ],
+  "evoluciones": [
+    { "cadenaId": 1, "numero": 1, "nombre": "Bulbasaur", "etapa": 0, "orden": 0 },
+    { "cadenaId": 1, "numero": 2, "nombre": "Ivysaur", "etapa": 1, "orden": 1 },
+    { "cadenaId": 1, "numero": 3, "nombre": "Venusaur", "etapa": 2, "orden": 2 },
+    { "cadenaId": 2, "numero": 4, "nombre": "Charmander", "etapa": 0, "orden": 0 },
+    { "cadenaId": 2, "numero": 5, "nombre": "Charmeleon", "etapa": 1, "orden": 1 },
+    { "cadenaId": 2, "numero": 6, "nombre": "Charizard", "etapa": 2, "orden": 2 },
+    { "cadenaId": 3, "numero": 7, "nombre": "Squirtle", "etapa": 0, "orden": 0 },
+    { "cadenaId": 3, "numero": 8, "nombre": "Wartortle", "etapa": 1, "orden": 1 },
+    { "cadenaId": 3, "numero": 9, "nombre": "Blastoise", "etapa": 2, "orden": 2 }
+  ]
+}
