@@ -59,6 +59,19 @@ class PokemonServiceTest {
     }
 
     @Test
+    void listarDevuelveElResumenEnElOrdenDelRepositorio() {
+        Pokemon squirtle = new Pokemon(7, "Squirtle");
+        squirtle.setTipos(List.of(agua));
+        when(pokemonRepository.findAllByOrderByNumeroAsc()).thenReturn(List.of(charmander(), squirtle));
+
+        assertThat(servicio.listar())
+                .extracting("numero", "nombre")
+                .containsExactly(org.assertj.core.groups.Tuple.tuple(4, "Charmander"),
+                        org.assertj.core.groups.Tuple.tuple(7, "Squirtle"));
+        assertThat(servicio.listar().get(1).tipos()).extracting("nombre").containsExactly("Agua");
+    }
+
+    @Test
     void obtenerPorNumeroArmaLaFichaCompleta() {
         Pokemon charmander = charmander();
         when(pokemonRepository.findById(4)).thenReturn(Optional.of(charmander));

@@ -26,6 +26,14 @@ export interface Evolucion {
   disponible: boolean;
 }
 
+/** Datos de un Pokémon para el listado. */
+export interface PokemonResumen {
+  numero: number;
+  nombre: string;
+  imagenUrl: string;
+  tipos: Tipo[];
+}
+
 export interface PokemonDetalle {
   numero: number;
   nombre: string;

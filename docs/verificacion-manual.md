@@ -27,6 +27,14 @@ criterio. Marcar cada casilla en las dos columnas.
 | CA4 | Abrir `/pokemon/9999` | Mensaje «Pokémon no encontrado» | ☐ | ☐ |
 | CA4 | Abrir `/pokemon/missingno` | Mensaje «Pokémon no encontrado» | ☐ | ☐ |
 
+## HU-02 · Ver el listado de la Pokédex (SCRUM-10)
+
+| # | Paso | Resultado esperado | Navegador | Móvil |
+|---|------|--------------------|:---------:|:-----:|
+| CA1 | Abrir `http://localhost:8100` | Se ve el listado; el primero es Bulbasaur N.º 0001 y siguen en orden hasta Mew N.º 0151, cada uno con imagen, nombre y tipos con color | ☐ | ☐ |
+| CA2 | Pulsar la tarjeta de Pikachu | Se abre la ficha de Pikachu N.º 0025 | ☐ | ☐ |
+| CA2 | En la ficha, pulsar «Pokédex» (volver) | Regresa al listado | ☐ | ☐ |
+
 ## Comprobaciones generales
 
 | Paso | Resultado esperado | Navegador | Móvil |

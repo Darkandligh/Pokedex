@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Pokédex</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="contenedor">
+    @switch (estado().tipo) {
+      @case ('cargando') {
+        <div class="estado"><ion-spinner name="crescent"></ion-spinner></div>
+      }
+      @case ('error') {
+        <div class="estado">
+          <p class="mensaje">No se pudo conectar con la API de la Pokédex.</p>
+        </div>
+      }
+    }
+
+    @if (estado(); as e) {
+      @if (e.tipo === 'ok') {
+        <!-- HU-02 CA1: ordenados por número con imagen, nombre y tipos; CA2: abre la ficha -->
+        <ul class="rejilla">
+          @for (p of e.pokemon; track p.numero) {
+            <li>
+              <a class="tarjeta" [routerLink]="['/pokemon', p.numero]">
+                <img [src]="p.imagenUrl" [alt]="p.nombre" width="160" height="160" loading="lazy" />
+                <span class="numero">{{ p.numero | numeroPokedex }}</span>
+                <span class="nombre">{{ p.nombre }}</span>
+                <span class="tipos">
+                  @for (tipo of p.tipos; track tipo.clave) {
+                    <app-tipo-etiqueta [tipo]="tipo" />
+                  }
+                </span>
+              </a>
+            </li>
+          }
+        </ul>
+      }
+    }
+  </div>
+</ion-content>

@@ -1,6 +1,7 @@
 package co.edu.fet.pokedex.service;
 
 import co.edu.fet.pokedex.dto.PokemonDetalleDto;
+import co.edu.fet.pokedex.dto.PokemonResumenDto;
 import co.edu.fet.pokedex.entity.Evolucion;
 import co.edu.fet.pokedex.entity.Pokemon;
 import co.edu.fet.pokedex.exception.PokemonNoEncontradoException;
@@ -29,6 +30,13 @@ public class PokemonService {
         this.pokemonRepository = pokemonRepository;
         this.evolucionRepository = evolucionRepository;
         this.mapper = mapper;
+    }
+
+    /** Listado de la Pokédex ordenado por número. */
+    public List<PokemonResumenDto> listar() {
+        return pokemonRepository.findAllByOrderByNumeroAsc().stream()
+                .map(mapper::aResumen)
+                .toList();
     }
 
     /** Ficha completa por número de la Pokédex. */
