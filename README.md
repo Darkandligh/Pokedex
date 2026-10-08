@@ -33,7 +33,7 @@ Primera vez, instalar las dependencias del frontend: `cd frontend` y luego `npm 
 
 ```bash
 cd backend
-./mvnw spring-boot:run          # en Windows: mvnw spring-boot:run
+./mvnw spring-boot:run          # en Windows (PowerShell): .\mvnw spring-boot:run
 ```
 
 **2. Frontend** (http://localhost:8100), en otra terminal:
@@ -55,9 +55,9 @@ Para probar en un **celular** de la misma red wifi, usar `ionic serve --external
 
 | Perfil | Cómo activarlo | Para qué |
 |--------|----------------|----------|
-| *(por defecto)* | `mvnw spring-boot:run` | H2 en archivo + importación desde PokéAPI |
-| `datosfijos` | `mvnw spring-boot:run -Dspring-boot.run.profiles=datosfijos` | Pokémon N.º 0001 a 0009 en memoria, sin internet. Lo usan las pruebas |
-| `postgres` | `mvnw spring-boot:run -Dspring-boot.run.profiles=postgres` | PostgreSQL (variables `POSTGRES_URL`, `POSTGRES_USUARIO`, `POSTGRES_CLAVE`) |
+| *(por defecto)* | `.\mvnw spring-boot:run` | H2 en archivo + importación desde PokéAPI |
+| `datosfijos` | `.\mvnw spring-boot:run "-Dspring-boot.run.profiles=datosfijos"` | Pokémon N.º 0001 a 0009 en memoria, sin internet. Lo usan las pruebas |
+| `postgres` | `.\mvnw spring-boot:run "-Dspring-boot.run.profiles=postgres"` | PostgreSQL (variables `POSTGRES_URL`, `POSTGRES_USUARIO`, `POSTGRES_CLAVE`) |
 
 La cantidad a importar se configura con `pokedex.importacion.cantidad` (151 por defecto) en
 `backend/src/main/resources/application.properties`.
