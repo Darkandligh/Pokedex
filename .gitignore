@@ -1,0 +1,36 @@
+# ===== Java / Maven =====
+target/
+*.class
+*.log
+hs_err_pid*
+.mvn/wrapper/maven-wrapper.jar
+
+# Base de datos H2 local (datos importados)
+backend/data/
+*.mv.db
+*.trace.db
+
+# ===== Node / Angular / Ionic =====
+node_modules/
+dist/
+www/
+.angular/
+.sass-cache/
+npm-debug.log*
+yarn-error.log*
+coverage/
+
+# ===== IDE / sistema =====
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+.DS_Store
+Thumbs.db
+
+# ===== Asistente =====
+CLAUDE.md
+.claude/
