@@ -27,6 +27,22 @@
     }
 
     @if (pokemon(); as p) {
+      <!-- HU-05: navegar al anterior o siguiente -->
+      <nav class="navegacion" aria-label="Navegación entre Pokémon">
+        @if (p.anterior !== null) {
+          <a class="boton-nav" data-prueba="anterior" [routerLink]="['/pokemon', p.anterior]" routerDirection="back">
+            <span aria-hidden="true">‹</span> Anterior <span class="numero">{{ p.anterior | numeroPokedex }}</span>
+          </a>
+        } @else {
+          <span></span>
+        }
+        @if (p.siguiente !== null) {
+          <a class="boton-nav" data-prueba="siguiente" [routerLink]="['/pokemon', p.siguiente]" routerDirection="forward">
+            Siguiente <span class="numero">{{ p.siguiente | numeroPokedex }}</span> <span aria-hidden="true">›</span>
+          </a>
+        }
+      </nav>
+
       <!-- CA1: número, nombre, imagen y descripción -->
       <header class="encabezado">
         <h1>{{ p.nombre }} <span class="numero">{{ p.numero | numeroPokedex }}</span></h1>

@@ -105,9 +105,13 @@ class PokemonServiceTest {
                 new Evolucion(2, 4, "Charmander", "https://img/4.png", 0, 0),
                 new Evolucion(2, 5, "Charmeleon", "https://img/5.png", 1, 1)));
         when(pokemonRepository.findAllById(anyIterable())).thenReturn(List.of(charmander));
+        when(pokemonRepository.buscarNumeroAnterior(4)).thenReturn(3);
+        when(pokemonRepository.buscarNumeroSiguiente(4)).thenReturn(null);
 
         PokemonDetalleDto ficha = servicio.obtenerPorNumero(4);
 
+        assertThat(ficha.anterior()).isEqualTo(3);
+        assertThat(ficha.siguiente()).isNull();
         assertThat(ficha.numero()).isEqualTo(4);
         assertThat(ficha.nombre()).isEqualTo("Charmander");
         assertThat(ficha.categoria()).isEqualTo("Lagartija");

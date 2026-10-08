@@ -29,10 +29,13 @@ public class PokemonMapper {
     }
 
     /**
-     * @param cadena               eslabones de la cadena evolutiva del Pokémon
-     * @param nombresDisponibles   número → nombre de los eslabones que están en la Pokédex
+     * @param cadena             eslabones de la cadena evolutiva del Pokémon
+     * @param nombresDisponibles número → nombre de los eslabones que están en la Pokédex
+     * @param anterior           número del Pokémon anterior (null si es el primero)
+     * @param siguiente          número del Pokémon siguiente (null si es el último)
      */
-    public PokemonDetalleDto aDetalle(Pokemon pokemon, List<Evolucion> cadena, Map<Integer, String> nombresDisponibles) {
+    public PokemonDetalleDto aDetalle(Pokemon pokemon, List<Evolucion> cadena, Map<Integer, String> nombresDisponibles,
+                                      Integer anterior, Integer siguiente) {
         List<EvolucionDto> cadenaDto = cadena.stream()
                 .map(evolucion -> aEvolucionDto(evolucion, nombresDisponibles))
                 .toList();
@@ -50,7 +53,9 @@ public class PokemonMapper {
                 aTiposDto(pokemon.getDebilidades()),
                 new EstadisticasDto(pokemon.getPs(), pokemon.getAtaque(), pokemon.getDefensa(),
                         pokemon.getAtaqueEspecial(), pokemon.getDefensaEspecial(), pokemon.getVelocidad()),
-                cadenaDto);
+                cadenaDto,
+                anterior,
+                siguiente);
     }
 
     private EvolucionDto aEvolucionDto(Evolucion evolucion, Map<Integer, String> nombresDisponibles) {

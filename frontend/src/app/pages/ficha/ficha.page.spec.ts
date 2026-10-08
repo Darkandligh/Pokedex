@@ -26,6 +26,8 @@ const IVYSAUR: PokemonDetalle = {
     { numero: 2, nombre: 'Ivysaur', imagenUrl: 'https://img/2.png', etapa: 1, disponible: true },
     { numero: 3, nombre: 'Venusaur', imagenUrl: 'https://img/3.png', etapa: 2, disponible: false },
   ],
+  anterior: 1,
+  siguiente: 3,
 };
 
 describe('FichaPage', () => {
@@ -64,6 +66,32 @@ describe('FichaPage', () => {
     expect(enlaces).toEqual(['/pokemon/1', '/pokemon/2']);
     // Venusaur no está disponible: se muestra sin enlace
     expect(html.querySelector('.eslabon.no-disponible')?.textContent).toContain('Venusaur');
+  });
+
+  it('HU-05 CA1: en el N.º 0002, «anterior» lleva al 0001 y «siguiente» al 0003', async () => {
+    await abrir('2');
+    http.expectOne(`${environment.apiUrl}/pokemon/2`).flush(IVYSAUR);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const html = fixture.nativeElement as HTMLElement;
+
+    const anterior = html.querySelector('[data-prueba="anterior"]');
+    const siguiente = html.querySelector('[data-prueba="siguiente"]');
+    expect(anterior?.getAttribute('href')).toBe('/pokemon/1');
+    expect(anterior?.textContent).toContain('N.º 0001');
+    expect(siguiente?.getAttribute('href')).toBe('/pokemon/3');
+    expect(siguiente?.textContent).toContain('N.º 0003');
+  });
+
+  it('HU-05: en el primero de la Pokédex no aparece «anterior»', async () => {
+    await abrir('1');
+    http.expectOne(`${environment.apiUrl}/pokemon/1`).flush({ ...IVYSAUR, numero: 1, anterior: null, siguiente: 2 });
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const html = fixture.nativeElement as HTMLElement;
+
+    expect(html.querySelector('[data-prueba="anterior"]')).toBeNull();
+    expect(html.querySelector('[data-prueba="siguiente"]')?.getAttribute('href')).toBe('/pokemon/2');
   });
 
   it('CA4: si la API responde 404 muestra «Pokémon no encontrado»', async () => {

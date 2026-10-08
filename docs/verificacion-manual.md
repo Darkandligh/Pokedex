@@ -47,6 +47,15 @@ criterio. Marcar cada casilla en las dos columnas.
 | CA2 | Escribir `9999` | Mensaje «No se encontraron Pokémon» | ☐ | ☐ |
 | — | Borrar el texto del buscador | Vuelve el listado completo | ☐ | ☐ |
 
+## HU-05 · Navegar al Pokémon anterior o siguiente (SCRUM-13)
+
+| # | Paso | Resultado esperado | Navegador | Móvil |
+|---|------|--------------------|:---------:|:-----:|
+| CA1 | Abrir la ficha de Ivysaur N.º 0002 y pulsar «Anterior» | Se abre Bulbasaur N.º 0001 | ☐ | ☐ |
+| CA1 | Volver a Ivysaur y pulsar «Siguiente» | Se abre Venusaur N.º 0003 | ☐ | ☐ |
+| — | En Bulbasaur N.º 0001 | No aparece «Anterior» | ☐ | ☐ |
+| — | En Mew N.º 0151 | No aparece «Siguiente» | ☐ | ☐ |
+
 ## Comprobaciones generales
 
 | Paso | Resultado esperado | Navegador | Móvil |

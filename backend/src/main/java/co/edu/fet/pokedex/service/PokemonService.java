@@ -69,7 +69,9 @@ public class PokemonService {
         List<Evolucion> cadena = pokemon.getCadenaEvolutivaId() == null
                 ? List.of()
                 : evolucionRepository.findByCadenaIdOrderByEtapaAscOrdenAsc(pokemon.getCadenaEvolutivaId());
-        return mapper.aDetalle(pokemon, cadena, nombresEnPokedex(cadena));
+        return mapper.aDetalle(pokemon, cadena, nombresEnPokedex(cadena),
+                pokemonRepository.buscarNumeroAnterior(pokemon.getNumero()),
+                pokemonRepository.buscarNumeroSiguiente(pokemon.getNumero()));
     }
 
     /** Número → nombre de los eslabones de la cadena que sí están en la Pokédex. */

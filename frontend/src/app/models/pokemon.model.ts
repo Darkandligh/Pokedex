@@ -50,4 +50,8 @@ export interface PokemonDetalle {
   debilidades: Tipo[];
   estadisticas: Estadisticas;
   cadenaEvolutiva: Evolucion[];
+  /** Número del Pokémon anterior, o null si es el primero. */
+  anterior: number | null;
+  /** Número del Pokémon siguiente, o null si es el último. */
+  siguiente: number | null;
 }

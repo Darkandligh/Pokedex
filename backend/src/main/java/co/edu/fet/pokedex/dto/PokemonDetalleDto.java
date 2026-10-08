@@ -5,8 +5,10 @@ import java.util.List;
 /**
  * Ficha completa de un Pokémon.
  *
- * @param altura en metros
- * @param peso   en kilogramos
+ * @param altura    en metros
+ * @param peso      en kilogramos
+ * @param anterior  número del Pokémon anterior, o null si es el primero
+ * @param siguiente número del Pokémon siguiente, o null si es el último
  */
 public record PokemonDetalleDto(
         Integer numero,
@@ -21,5 +23,7 @@ public record PokemonDetalleDto(
         List<TipoDto> tipos,
         List<TipoDto> debilidades,
         EstadisticasDto estadisticas,
-        List<EvolucionDto> cadenaEvolutiva) {
+        List<EvolucionDto> cadenaEvolutiva,
+        Integer anterior,
+        Integer siguiente) {
 }

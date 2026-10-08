@@ -16,6 +16,26 @@
   font-weight: 600;
 }
 
+.navegacion {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.boton-nav {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--ion-color-step-50, #f2f2f2);
+  color: inherit;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--ion-color-step-100, #e6e6e6);
+  }
+}
+
 .encabezado h1 {
   margin: 8px 0 16px;
   font-size: 1.8rem;
