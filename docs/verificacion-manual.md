@@ -56,6 +56,19 @@ criterio. Marcar cada casilla en las dos columnas.
 | — | En Bulbasaur N.º 0001 | No aparece «Anterior» | ☐ | ☐ |
 | — | En Mew N.º 0151 | No aparece «Siguiente» | ☐ | ☐ |
 
+## HU-04 · Filtrar Pokémon por tipo (SCRUM-12) — Sprint 2
+
+| # | Paso | Resultado esperado | Navegador | Móvil |
+|---|------|--------------------|:---------:|:-----:|
+| — | Abrir el listado | Debajo del buscador aparece «Todos» (marcado) y un botón por tipo con su color | ☐ | ☐ |
+| CA1 | Pulsar «Fuego» | Solo Pokémon de tipo Fuego (Charmander, Charmeleon, Charizard, Vulpix…), en orden de número | ☐ | ☐ |
+| CA1 | Pulsar «Volador» | Aparece también Charizard (Fuego/Volador): cuenta el tipo secundario | ☐ | ☐ |
+| CA2 | Con «Fuego» elegido, escribir `char` | Charmander, Charmeleon y Charizard | ☐ | ☐ |
+| CA2 | Con «Agua» elegido, escribir `pika` | Mensaje «No se encontraron Pokémon» | ☐ | ☐ |
+| CA3 | Pulsar «Todos» | Vuelve el listado completo (con la búsqueda que haya) | ☐ | ☐ |
+| CA3 | Pulsar «Fuego» dos veces | La segunda vez se quita el filtro | ☐ | ☐ |
+| — | En el celular, deslizar la fila de tipos | Se desplaza de lado sin mover la página | — | ☐ |
+
 ## HU-13 · Registrar, editar y eliminar Pokémon (SCRUM-21) — Sprint 2
 
 Administrador por defecto: usuario `admin`, clave `pokedex2026` (se cambian con las variables
