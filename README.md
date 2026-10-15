@@ -1,16 +1,21 @@
-# Pokédex — Sprint 1
+# Pokédex — Sprints 1 y 2
 
 Clon simplificado de la Pokédex en español, hecho para la materia Ingeniería de Software I
 (Fundación Escuela Tecnológica de Neiva — FET).
 Equipo: Eduardo Ascencio, Juan Diego Trujillo y Juan José Garzón.
 
-**Objetivo del sprint:** un visitante puede buscar un Pokémon, ver el listado y abrir su ficha completa.
 **Sprint 1:** 24 de septiembre al 8 de octubre de 2026 · 4 historias · 18 puntos.
+Objetivo: un visitante puede buscar un Pokémon, ver el listado y abrir su ficha completa.
+
+**Sprint 2 · Admin y noticias:** 8 al 22 de octubre de 2026 · 3 historias · 18 puntos.
+Objetivo: un visitante puede filtrar la Pokédex por tipo y ver noticias en la portada, y un
+administrador puede registrar, editar y eliminar Pokémon.
+
 Las historias completas están en [historias-pokedex.pdf.pdf](historias-pokedex.pdf.pdf).
 
 | Capa | Tecnología |
 |------|------------|
-| Backend | Java 21 · Spring Boot 3.5 · Spring Data JPA · Maven Wrapper |
+| Backend | Java 21 · Spring Boot 3.5 · Spring Data JPA · Spring Security · Maven Wrapper |
 | Base de datos | H2 en archivo (por defecto) · PostgreSQL (perfil opcional) |
 | Frontend | Ionic 9 · Angular 22 (componentes standalone) |
 | Datos | Importados una vez desde [PokéAPI](https://pokeapi.co) a nuestra base |
@@ -47,6 +52,22 @@ La primera vez, el backend importa los 151 Pokémon de la primera generación de
 Tarda alrededor de 1 a 2 minutos; al terminar aparece en el log `Importación terminada: 151 nuevos`.
 Los datos quedan en `backend/data/` y en los siguientes arranques no se vuelve a consultar PokéAPI.
 Si PokéAPI no responde, el backend arranca igual con lo que ya haya en la base.
+Cuando la importación termina completa queda registrada, así los Pokémon que elimine un
+administrador no vuelven a importarse al reiniciar.
+
+La app abre en la **portada** (noticias y botón «Ver la Pokédex»). Las noticias de ejemplo se
+cargan solas la primera vez, desde `backend/src/main/resources/noticias-ejemplo.json`.
+
+### Administrador (HU-13)
+
+Registrar, editar y eliminar Pokémon exige iniciar sesión como administrador («Administrar» en
+el listado). Usuario y clave por defecto, **solo para desarrollo**:
+
+| Usuario | Clave | Cómo cambiarlos |
+|---------|-------|-----------------|
+| `admin` | `pokedex2026` | Variables de entorno `POKEDEX_ADMIN_USUARIO` y `POKEDEX_ADMIN_CLAVE` |
+
+La sesión dura mientras la pestaña del navegador esté abierta.
 
 Para probar en un **celular** de la misma red wifi, usar `ionic serve --external` y abrir
 `http://IP-DEL-COMPUTADOR:8100`. La app busca la API en esa misma IP, en el puerto 8080.
@@ -71,13 +92,28 @@ La cantidad a importar se configura con `pokedex.importacion.cantidad` (151 por 
 | GET | `/api/pokemon?q=0025` | Filtra por número; acepta `25`, `025` y `0025` | HU-03 |
 | GET | `/api/pokemon/{numero}` | Ficha completa, con cadena evolutiva y `anterior`/`siguiente` (null en los extremos) | HU-01, HU-05 |
 | GET | `/api/pokemon/nombre/{nombre}` | Ficha completa por nombre | HU-01 |
+| GET | `/api/pokemon?tipo=fire` | Filtra por tipo (principal o secundario); se combina con `q` | HU-04 |
+| GET | `/api/tipos` | Tipos en el orden oficial, para el filtro y el formulario | HU-04, HU-13 |
+| GET | `/api/noticias?limite=6` | Noticias de la más reciente a la más antigua (límite de 1 a 20) | HU-06 |
+| POST | `/api/pokemon` | Registrar un Pokémon (`201` con la ficha) · **administrador** | HU-13 |
+| PUT | `/api/pokemon/{numero}` | Editar un Pokémon; el número no cambia · **administrador** | HU-13 |
+| DELETE | `/api/pokemon/{numero}` | Eliminar un Pokémon (`204`) · **administrador** | HU-13 |
+| GET | `/api/admin/sesion` | Comprueba las credenciales del administrador | HU-13 |
+
+Las consultas (GET) son públicas. Las operaciones de **administrador** usan HTTP Basic
+(`Authorization: Basic ...`); sin credenciales responden `401` y con un usuario sin el rol, `403`.
 
 Cuando el Pokémon no existe, la respuesta es `404` con `{"estado": 404, "mensaje": "Pokémon no encontrado"}`.
 Una búsqueda sin coincidencias devuelve `200` con una lista vacía, y el frontend muestra «No se encontraron Pokémon».
+Si los datos al registrar o editar no son válidos, la respuesta es `400` con el mensaje de cada campo
+(`{"estado": 400, "mensaje": "Datos inválidos", "errores": {"nombre": "El nombre es obligatorio"}}`);
+un número o nombre repetido responde `409`.
 
 ## Comprometido vs. Hecho
 
-Estado del código en este repositorio al cierre del sprint.
+### Sprint 1
+
+Estado del código al cierre del Sprint 1.
 
 | Historia | Criterio de aceptación comprometido | Hecho | Evidencia (pruebas automáticas) |
 |----------|-------------------------------------|:-----:|---------------------------------|
@@ -108,15 +144,52 @@ T-01.6: las pruebas automáticas están hechas y pasan. La prueba manual en nave
 se hace con la lista [docs/verificacion-manual.md](docs/verificacion-manual.md), que el equipo
 debe completar y marcar.
 
+### Sprint 2 · Admin y noticias
+
+Estado del código en las ramas `feature/hu-13-administrar-pokemon`, `feature/hu-04-filtrar-por-tipo`
+y `feature/hu-06-noticias-portada`. Los criterios de la HU-04 y la HU-06 se redactaron a partir del
+objetivo del acta de planeación; hay que confirmarlos contra los de Jira.
+
+| Historia | Criterio de aceptación comprometido | Hecho | Evidencia (pruebas automáticas) |
+|----------|-------------------------------------|:-----:|---------------------------------|
+| **HU-13** Registrar, editar y eliminar Pokémon · Must · 8 pts (SCRUM-21) | CA1. Registrar un Pokémon | ✅ | `CriteriosAceptacionHu13Test.ca1…`, `formulario.page.spec.ts` |
+| | CA2. Editar un Pokémon | ✅ | `CriteriosAceptacionHu13Test.ca2…`, `formulario.page.spec.ts` |
+| | CA3. Validar los datos | ✅ | `CriteriosAceptacionHu13Test.ca3…`, `formulario.page.spec.ts` |
+| | CA4. Eliminar con confirmación | ✅ | `CriteriosAceptacionHu13Test.ca4…`, `panel.page.spec.ts` |
+| | CA5. Negar el acceso a quien no sea administrador | ✅ | `CriteriosAceptacionHu13Test.ca5…`, `auth.spec.ts` |
+| **HU-04** Filtrar Pokémon por tipo · Should · 5 pts (SCRUM-12) | CA1. Al elegir un tipo veo solo los Pokémon de ese tipo | ✅ | `CriteriosAceptacionHu04Test.ca1…`, `listado.page.spec.ts` |
+| | CA2. El filtro se combina con la búsqueda por nombre o número | ✅ | `CriteriosAceptacionHu04Test.ca2…`, `listado.page.spec.ts` |
+| | CA3. Al quitar el filtro veo todos los Pokémon | ✅ | `CriteriosAceptacionHu04Test.ca3…`, `listado.page.spec.ts` |
+| **HU-06** Ver noticias recientes en la portada · Should · 5 pts (SCRUM-14) | CA1. Veo las noticias de la más reciente a la más antigua, con imagen, fecha, título y resumen | ✅ | `CriteriosAceptacionHu06Test.ca1…`, `portada.page.spec.ts` |
+| | CA2. Desde la portada entro a la Pokédex | ✅ | `portada.page.spec.ts` |
+| | CA3. Sin noticias veo «No hay noticias por ahora» | ✅ | `CriteriosAceptacionHu06Test.ca3…`, `portada.page.spec.ts` |
+
+| Tarea | Capa | Hecho | Commit |
+|-------|------|:-----:|--------|
+| T-13.1 Endpoints para registrar, editar y eliminar con validaciones | Backend | ✅ | `SCRUM-21 T-13.1 …` |
+| T-13.2 Proteger la administración con rol de administrador | Backend | ✅ | `SCRUM-21 T-13.2 …` |
+| T-13.3 Formulario de registro, edición y eliminación en Ionic | Frontend | ✅ | `SCRUM-21 T-13.3 …` |
+| T-13.4 Probar CA1 a CA5 en navegador y móvil | QA | ⚠️ Falta marcar | `SCRUM-21 T-13.4 …` |
+| T-04.1 Filtro por tipo en la API | Backend | ✅ | `SCRUM-12 T-04.1 …` |
+| T-04.2 Selector de tipos en el listado | Frontend | ✅ | `SCRUM-12 T-04.2 …` |
+| T-04.3 Probar CA1 a CA3 en navegador y móvil | QA | ⚠️ Falta marcar | `SCRUM-12 T-04.3 …` |
+| T-06.1 Entidad Noticia, datos de ejemplo y endpoint de noticias | Backend | ✅ | `SCRUM-14 T-06.1 …` |
+| T-06.2 Portada con tarjetas de noticias y acceso a la Pokédex | Frontend | ✅ | `SCRUM-14 T-06.2 …` |
+| T-06.3 Probar CA1 a CA3 en navegador y móvil | QA | ⚠️ Falta marcar | `SCRUM-14 T-06.3 …` |
+
+Las tareas de QA tienen sus casos en [docs/verificacion-manual.md](docs/verificacion-manual.md);
+quedan pendientes hasta que el equipo los pruebe y marque en navegador y celular.
+
 ## Pruebas automáticas
 
 ```bash
-cd backend && ./mvnw test                 # 38 pruebas: servicio (unitarias) y endpoints (MockMvc), perfil datosfijos
-cd frontend && npx ng test --watch=false  # 12 pruebas: ficha, listado y formato del número
+cd backend && ./mvnw test                 # 66 pruebas: servicio (unitarias) y endpoints (MockMvc), perfil datosfijos
+cd frontend && npx ng test --watch=false  # 34 pruebas: portada, listado, ficha, administración y sesión
 ```
 
 Las pruebas de backend corren sin internet sobre el perfil `datosfijos` y cubren cada criterio de
-aceptación, incluidos «Pokémon no encontrado» y las búsquedas sin coincidencias.
+aceptación, incluidos «Pokémon no encontrado», las búsquedas sin coincidencias, las validaciones
+del formulario y el acceso sin ser administrador.
 
 ## Decisiones de diseño
 
@@ -131,12 +204,17 @@ aceptación, incluidos «Pokémon no encontrado» y las búsquedas sin coinciden
 - **Habilidad:** se muestra la primera habilidad no oculta, con su nombre en español.
 - **Género:** se deriva de `gender_rate` de PokéAPI («Macho y hembra», «Macho», «Hembra», «Desconocido»).
 - El diseño y el ícono son propios; no se usan logos ni recursos gráficos de pokemon.com.
+- **Debilidades de los Pokémon registrados por un administrador** (HU-13): se calculan con la tabla
+  de daño entre tipos guardada en el backend (`TablaTipos`), la misma que entrega PokéAPI, así no
+  hace falta internet para registrar.
+- **Noticias de ejemplo** (HU-06): cuentan el avance del propio proyecto y usan como imagen la
+  ilustración oficial de un Pokémon; publicar noticias desde la app es la HU-12, que sigue en el backlog.
 
 ## Estructura
 
 ```
-backend/   API REST (controller → service → repository, DTOs, importador de PokéAPI)
-frontend/  App Ionic (páginas listado y ficha, servicio de la API)
+backend/   API REST (controller → service → repository, DTOs, seguridad, importador de PokéAPI, noticias de ejemplo)
+frontend/  App Ionic (páginas portada, listado, ficha y administración; servicios de la API y de la sesión)
 docs/      Lista de verificación manual
 ```
 
