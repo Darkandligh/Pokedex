@@ -74,6 +74,16 @@ export interface PokemonFormulario {
   estadisticas: Estadisticas;
 }
 
+/** Noticia de la portada (HU-06). */
+export interface Noticia {
+  id: number;
+  titulo: string;
+  resumen: string;
+  imagenUrl: string | null;
+  /** Fecha de publicación en formato ISO ("2026-10-15"). */
+  fecha: string;
+}
+
 /** Respuesta de error de la API: {"estado": 400, "mensaje": "...", "errores": {"nombre": "..."}}. */
 export interface ErrorApi {
   estado: number;

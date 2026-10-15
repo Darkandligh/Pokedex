@@ -3,6 +3,11 @@ import { Routes } from '@angular/router';
 import { adminGuard } from './services/admin.guard';
 
 export const routes: Routes = [
+  // HU-06: portada con noticias y acceso a la Pokédex
+  {
+    path: 'inicio',
+    loadComponent: () => import('./pages/portada/portada.page').then((m) => m.PortadaPage),
+  },
   {
     path: 'pokedex',
     loadComponent: () => import('./pages/listado/listado.page').then((m) => m.ListadoPage),
@@ -31,6 +36,6 @@ export const routes: Routes = [
     canActivate: [adminGuard],
     loadComponent: () => import('./pages/admin/formulario.page').then((m) => m.FormularioPage),
   },
-  { path: '', redirectTo: 'pokedex', pathMatch: 'full' },
-  { path: '**', redirectTo: 'pokedex' },
+  { path: '', redirectTo: 'inicio', pathMatch: 'full' },
+  { path: '**', redirectTo: 'inicio' },
 ];

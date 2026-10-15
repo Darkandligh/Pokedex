@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Pokédex</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="contenedor">
+    <!-- CA2: acceso a la Pokédex -->
+    <section class="bienvenida">
+      <div>
+        <h1>Bienvenido a la Pokédex</h1>
+        <p>Consulta los 151 Pokémon de Kanto: busca por nombre o número, filtra por tipo y abre la ficha de cada uno.</p>
+      </div>
+      <a class="boton" routerLink="/pokedex" data-prueba="ir-pokedex">Ver la Pokédex</a>
+    </section>
+
+    <h2>Noticias recientes</h2>
+
+    @switch (estado().tipo) {
+      @case ('cargando') {
+        <div class="estado"><ion-spinner name="crescent"></ion-spinner></div>
+      }
+      @case ('error') {
+        <div class="estado">
+          <p class="mensaje">No se pudieron cargar las noticias.</p>
+        </div>
+      }
+    }
+
+    @if (estado(); as e) {
+      @if (e.tipo === 'ok' && e.noticias.length === 0) {
+        <!-- CA3 -->
+        <div class="estado">
+          <p class="mensaje" data-prueba="sin-noticias">{{ mensajeSinNoticias }}</p>
+        </div>
+      }
+      @if (e.tipo === 'ok') {
+        <!-- CA1: de la más reciente a la más antigua -->
+        <ul class="noticias">
+          @for (noticia of e.noticias; track noticia.id) {
+            <li>
+              <article class="noticia" data-prueba="noticia">
+                @if (noticia.imagenUrl) {
+                  <div class="imagen">
+                    <img [src]="noticia.imagenUrl" alt="" width="160" height="160" loading="lazy" />
+                  </div>
+                }
+                <div class="texto">
+                  <time [attr.datetime]="noticia.fecha">{{ noticia.fecha | date: 'longDate' : 'UTC' }}</time>
+                  <h3>{{ noticia.titulo }}</h3>
+                  <p>{{ noticia.resumen }}</p>
+                </div>
+              </article>
+            </li>
+          }
+        </ul>
+      }
+    }
+  </div>
+</ion-content>

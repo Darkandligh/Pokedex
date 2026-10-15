@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import {
+  IonBackButton,
   IonButton,
   IonButtons,
   IonContent,
@@ -36,6 +37,7 @@ export const MENSAJE_SIN_RESULTADOS = 'No se encontraron Pokémon';
   templateUrl: 'listado.page.html',
   styleUrls: ['listado.page.scss'],
   imports: [
+    IonBackButton,
     IonButton,
     IonButtons,
     IonContent,
