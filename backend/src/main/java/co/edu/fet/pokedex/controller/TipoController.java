@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * Tipos de Pokémon que hay en la base, en el orden oficial (Normal, Lucha, Volador...).
- * Los usa el formulario de administración (HU-13).
+ * Los usan el filtro por tipo del listado (HU-04) y el formulario de administración (HU-13).
  */
 @RestController
 @RequestMapping("/api/tipos")

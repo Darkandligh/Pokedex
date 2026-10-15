@@ -39,11 +39,13 @@ public class PokemonController {
 
     /**
      * Listado de la Pokédex ordenado por número (HU-02); con q filtra por nombre
-     * parcial o por número (HU-03). Sin coincidencias devuelve una lista vacía.
+     * parcial o por número (HU-03) y con tipo, por tipo (HU-04). Los filtros se combinan.
+     * Sin coincidencias devuelve una lista vacía.
      */
     @GetMapping
-    public List<PokemonResumenDto> listar(@RequestParam(name = "q", required = false) String q) {
-        return pokemonService.listar(q);
+    public List<PokemonResumenDto> listar(@RequestParam(name = "q", required = false) String q,
+                                          @RequestParam(name = "tipo", required = false) String tipo) {
+        return pokemonService.listar(q, tipo);
     }
 
     /** Ficha completa por número (HU-01). */

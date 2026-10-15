@@ -39,7 +39,18 @@ public class PokemonService {
      *                 otro texto: nombres que lo contengan, sin distinguir mayúsculas
      */
     public List<PokemonResumenDto> listar(String busqueda) {
+        return listar(busqueda, null);
+    }
+
+    /**
+     * Listado filtrado por búsqueda (HU-03) y por tipo (HU-04); los dos filtros se combinan.
+     *
+     * @param tipo clave del tipo ("fire"), sin distinguir mayúsculas; cuenta tanto el tipo
+     *             principal como el secundario. Vacío: todos los tipos
+     */
+    public List<PokemonResumenDto> listar(String busqueda, String tipo) {
         String texto = busqueda == null ? "" : busqueda.trim();
+        String claveTipo = tipo == null ? "" : tipo.trim();
         List<Pokemon> resultado;
         if (texto.isEmpty()) {
             resultado = pokemonRepository.findAllByOrderByNumeroAsc();
@@ -48,7 +59,14 @@ public class PokemonService {
         } else {
             resultado = pokemonRepository.findByNombreContainingIgnoreCaseOrderByNumeroAsc(texto);
         }
-        return resultado.stream().map(mapper::aResumen).toList();
+        return resultado.stream()
+                .filter(pokemon -> claveTipo.isEmpty() || tieneTipo(pokemon, claveTipo))
+                .map(mapper::aResumen)
+                .toList();
+    }
+
+    private static boolean tieneTipo(Pokemon pokemon, String claveTipo) {
+        return pokemon.getTipos().stream().anyMatch(tipo -> tipo.getClave().equalsIgnoreCase(claveTipo));
     }
 
     /** Ficha completa por número de la Pokédex. */

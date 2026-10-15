@@ -89,6 +89,20 @@ class PokemonServiceTest {
     }
 
     @Test
+    void filtrarPorTipoSeCombinaConLaBusqueda() {
+        Pokemon squirtle = new Pokemon(7, "Squirtle");
+        squirtle.setTipos(List.of(agua));
+        when(pokemonRepository.findAllByOrderByNumeroAsc()).thenReturn(List.of(charmander(), squirtle));
+        when(pokemonRepository.findById(4)).thenReturn(Optional.of(charmander()));
+
+        assertThat(servicio.listar(null, "water")).extracting("nombre").containsExactly("Squirtle");
+        assertThat(servicio.listar("", " FIRE ")).extracting("nombre").containsExactly("Charmander");
+        assertThat(servicio.listar("4", "fire")).extracting("nombre").containsExactly("Charmander");
+        assertThat(servicio.listar("4", "water")).isEmpty();
+        assertThat(servicio.listar(null, "")).hasSize(2);
+    }
+
+    @Test
     void buscarSinCoincidenciasDevuelveListaVacia() {
         when(pokemonRepository.findById(9999)).thenReturn(Optional.empty());
         when(pokemonRepository.findByNombreContainingIgnoreCaseOrderByNumeroAsc("zzz")).thenReturn(List.of());
