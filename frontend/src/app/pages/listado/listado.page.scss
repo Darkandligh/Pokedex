@@ -1,3 +1,38 @@
+// HU-04: fila de tipos con desplazamiento horizontal en pantallas angostas
+.filtro-tipos {
+  display: flex;
+  gap: 6px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2px 12px 8px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.chip {
+  flex-shrink: 0;
+  padding: 4px 12px;
+  border: 2px solid var(--color-tipo, var(--ion-color-medium));
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &.activo {
+    border-color: var(--color-tipo, var(--ion-color-primary));
+    background: var(--color-tipo, var(--ion-color-primary));
+    color: var(--texto-tipo, var(--ion-color-primary-contrast));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ion-color-primary);
+    outline-offset: 2px;
+  }
+}
+
 .contenedor {
   max-width: 1100px;
   margin: 0 auto;

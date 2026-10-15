@@ -16,6 +16,37 @@
       (ionInput)="buscar($event)"
     ></ion-searchbar>
   </ion-toolbar>
+  @if (tipos().length) {
+    <ion-toolbar>
+      <!-- HU-04: filtro por tipo -->
+      <div class="filtro-tipos" role="group" aria-label="Filtrar por tipo">
+        <button
+          type="button"
+          class="chip"
+          [class.activo]="!tipoElegido()"
+          [attr.aria-pressed]="!tipoElegido()"
+          data-prueba="tipo-todos"
+          (click)="elegirTipo('')"
+        >
+          Todos
+        </button>
+        @for (tipo of tipos(); track tipo.clave) {
+          <button
+            type="button"
+            class="chip"
+            [class.activo]="tipoElegido() === tipo.clave"
+            [attr.aria-pressed]="tipoElegido() === tipo.clave"
+            [style.--color-tipo]="colorTipo(tipo.clave).fondo"
+            [style.--texto-tipo]="colorTipo(tipo.clave).texto"
+            [attr.data-prueba]="'tipo-' + tipo.clave"
+            (click)="elegirTipo(tipo.clave)"
+          >
+            {{ tipo.nombre }}
+          </button>
+        }
+      </div>
+    </ion-toolbar>
+  }
 </ion-header>
 
 <ion-content>

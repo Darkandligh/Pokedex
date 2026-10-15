@@ -14,12 +14,18 @@ export class PokemonService {
   private readonly url = `${environment.apiUrl}/pokemon`;
 
   /**
-   * Listado de la Pokédex ordenado por número.
+   * Listado de la Pokédex ordenado por número. Los dos filtros se combinan.
    * @param busqueda nombre (parcial) o número ("1", "001", "0001"); vacío devuelve todos
+   * @param tipo clave del tipo ("fire") para filtrar por tipo (HU-04); vacío devuelve todos
    */
-  listar(busqueda = ''): Observable<PokemonResumen[]> {
-    const q = busqueda.trim();
-    const params = q ? new HttpParams().set('q', q) : undefined;
+  listar(busqueda = '', tipo = ''): Observable<PokemonResumen[]> {
+    let params = new HttpParams();
+    if (busqueda.trim()) {
+      params = params.set('q', busqueda.trim());
+    }
+    if (tipo) {
+      params = params.set('tipo', tipo);
+    }
     return this.http.get<PokemonResumen[]>(this.url, { params });
   }
 
