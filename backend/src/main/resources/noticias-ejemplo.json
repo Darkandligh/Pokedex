@@ -1,0 +1,38 @@
+[
+  {
+    "titulo": "Arranca el proyecto Pokédex",
+    "resumen": "El equipo levantó las historias de usuario a partir del sitio oficial de Pokémon en español y planeó el primer sprint: buscar, ver el listado y abrir la ficha de cada Pokémon.",
+    "pokemon": 1,
+    "fecha": "2026-09-24"
+  },
+  {
+    "titulo": "Los 151 Pokémon de Kanto, en español",
+    "resumen": "La Pokédex importa una sola vez los datos de la primera generación desde PokéAPI: descripción, categoría, habilidad, estadísticas, debilidades y cadena evolutiva, todo en español.",
+    "pokemon": 151,
+    "fecha": "2026-10-01"
+  },
+  {
+    "titulo": "Sprint 1 cerrado: 18 de 18 puntos",
+    "resumen": "Ya se puede ver el listado ordenado por número, buscar por nombre o número, abrir la ficha completa de cada Pokémon y pasar al anterior o al siguiente.",
+    "pokemon": 25,
+    "fecha": "2026-10-08"
+  },
+  {
+    "titulo": "Comienza el Sprint 2: administración y noticias",
+    "resumen": "En estas dos semanas llegan el filtro por tipo, las noticias en la portada y la administración de Pokémon: registrar, editar y eliminar.",
+    "pokemon": 133,
+    "fecha": "2026-10-08"
+  },
+  {
+    "titulo": "Los administradores ya pueden registrar Pokémon",
+    "resumen": "Con la sesión de administrador se pueden registrar Pokémon nuevos, corregir sus datos y eliminarlos. Las debilidades se calculan solas a partir de los tipos.",
+    "pokemon": 150,
+    "fecha": "2026-10-13"
+  },
+  {
+    "titulo": "Filtra la Pokédex por tipo",
+    "resumen": "Debajo del buscador aparecen los 18 tipos con su color. Elige uno para ver solo esos Pokémon; el filtro se combina con la búsqueda por nombre o número.",
+    "pokemon": 6,
+    "fecha": "2026-10-15"
+  }
+]
