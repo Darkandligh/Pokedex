@@ -6,6 +6,7 @@ import co.edu.fet.pokedex.entity.Pokemon;
 import co.edu.fet.pokedex.entity.Tipo;
 import co.edu.fet.pokedex.importacion.CalculadorDebilidades.RelacionesDano;
 import co.edu.fet.pokedex.importacion.ConversorPokeApi.EslabonCadena;
+import co.edu.fet.pokedex.repository.EstadoImportacionRepository;
 import co.edu.fet.pokedex.repository.EvolucionRepository;
 import co.edu.fet.pokedex.repository.PokemonRepository;
 import co.edu.fet.pokedex.repository.TipoRepository;
@@ -32,6 +33,8 @@ import java.util.stream.StreamSupport;
  * - Solo consulta los Pokémon que todavía no están en la base, así no repite la
  *   importación (y si una importación anterior quedó a medias, la completa).
  * - Si PokéAPI no responde, registra el problema y la aplicación arranca con lo que ya haya.
+ * - Cuando la importación termina completa queda registrada (EstadoImportacion) y no se repite,
+ *   para que los Pokémon eliminados por un administrador (HU-13) no vuelvan a aparecer.
  */
 @Component
 @ConditionalOnProperty(prefix = "pokedex.importacion", name = "habilitada", havingValue = "true", matchIfMissing = true)
@@ -45,6 +48,7 @@ public class ImportadorPokeApi implements ApplicationRunner {
     private final PokemonRepository pokemonRepository;
     private final TipoRepository tipoRepository;
     private final EvolucionRepository evolucionRepository;
+    private final EstadoImportacionRepository estadoRepository;
 
     // Cachés en memoria para no repetir peticiones durante la importación
     private final Map<String, Tipo> tipos = new HashMap<>();
@@ -53,19 +57,25 @@ public class ImportadorPokeApi implements ApplicationRunner {
 
     public ImportadorPokeApi(PokeApiCliente cliente, ImportacionProperties propiedades,
                              PokemonRepository pokemonRepository, TipoRepository tipoRepository,
-                             EvolucionRepository evolucionRepository) {
+                             EvolucionRepository evolucionRepository, EstadoImportacionRepository estadoRepository) {
         this.cliente = cliente;
         this.propiedades = propiedades;
         this.pokemonRepository = pokemonRepository;
         this.tipoRepository = tipoRepository;
         this.evolucionRepository = evolucionRepository;
+        this.estadoRepository = estadoRepository;
     }
 
     @Override
     public void run(ApplicationArguments args) {
         int cantidad = propiedades.cantidad();
         long existentes = pokemonRepository.count();
+        if (estadoRepository.importacionCompletada()) {
+            log.info("La importación ya se hizo ({} Pokémon en la base); no se consulta PokéAPI.", existentes);
+            return;
+        }
         if (existentes >= cantidad) {
+            estadoRepository.marcarCompletada();
             log.info("La base ya tiene {} Pokémon; no se consulta PokéAPI.", existentes);
             return;
         }
@@ -81,6 +91,7 @@ public class ImportadorPokeApi implements ApplicationRunner {
 
         int importados = 0;
         int fallosSeguidos = 0;
+        boolean huboFallos = false;
         for (int numero = 1; numero <= cantidad; numero++) {
             if (pokemonRepository.existsById(numero)) {
                 continue;
@@ -93,6 +104,7 @@ public class ImportadorPokeApi implements ApplicationRunner {
                     log.info("  {} Pokémon importados (último: N.º {})", importados, numero);
                 }
             } catch (RestClientException | IllegalArgumentException e) {
+                huboFallos = true;
                 fallosSeguidos++;
                 log.warn("No se pudo importar el Pokémon N.º {}: {}", numero, e.getMessage());
                 if (fallosSeguidos >= MAXIMO_FALLOS_SEGUIDOS) {
@@ -100,6 +112,10 @@ public class ImportadorPokeApi implements ApplicationRunner {
                     break;
                 }
             }
+        }
+        if (!huboFallos) {
+            // Desde aquí, los Pokémon que elimine un administrador no se vuelven a importar
+            estadoRepository.marcarCompletada();
         }
         log.info("Importación terminada: {} nuevos, {} en total.", importados, pokemonRepository.count());
     }

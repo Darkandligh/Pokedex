@@ -1,13 +1,24 @@
 package co.edu.fet.pokedex.controller;
 
 import co.edu.fet.pokedex.dto.PokemonDetalleDto;
+import co.edu.fet.pokedex.dto.PokemonFormularioDto;
 import co.edu.fet.pokedex.dto.PokemonResumenDto;
+import co.edu.fet.pokedex.service.AdministracionPokemonService;
 import co.edu.fet.pokedex.service.PokemonService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
@@ -19,9 +30,11 @@ import java.util.List;
 public class PokemonController {
 
     private final PokemonService pokemonService;
+    private final AdministracionPokemonService administracionService;
 
-    public PokemonController(PokemonService pokemonService) {
+    public PokemonController(PokemonService pokemonService, AdministracionPokemonService administracionService) {
         this.pokemonService = pokemonService;
+        this.administracionService = administracionService;
     }
 
     /**
@@ -43,5 +56,28 @@ public class PokemonController {
     @GetMapping("/nombre/{nombre}")
     public PokemonDetalleDto obtenerPorNombre(@PathVariable String nombre) {
         return pokemonService.obtenerPorNombre(nombre);
+    }
+
+    /** Registrar un Pokémon (HU-13 CA1). Responde 201 con la ficha y la ruta en Location. */
+    @PostMapping
+    public ResponseEntity<PokemonDetalleDto> registrar(@Valid @RequestBody PokemonFormularioDto datos) {
+        PokemonDetalleDto ficha = administracionService.registrar(datos);
+        return ResponseEntity
+                .created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{numero}")
+                        .buildAndExpand(ficha.numero()).toUri())
+                .body(ficha);
+    }
+
+    /** Editar un Pokémon (HU-13 CA2). */
+    @PutMapping("/{numero}")
+    public PokemonDetalleDto editar(@PathVariable int numero, @Valid @RequestBody PokemonFormularioDto datos) {
+        return administracionService.editar(numero, datos);
+    }
+
+    /** Eliminar un Pokémon (HU-13 CA4). */
+    @DeleteMapping("/{numero}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void eliminar(@PathVariable int numero) {
+        administracionService.eliminar(numero);
     }
 }
