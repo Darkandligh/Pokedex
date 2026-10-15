@@ -31,7 +31,7 @@ criterio. Marcar cada casilla en las dos columnas.
 
 | # | Paso | Resultado esperado | Navegador | Móvil |
 |---|------|--------------------|:---------:|:-----:|
-| CA1 | Abrir `http://localhost:8100` | Se ve el listado; el primero es Bulbasaur N.º 0001 y siguen en orden hasta Mew N.º 0151, cada uno con imagen, nombre y tipos con color | ☐ | ☐ |
+| CA1 | Abrir `http://localhost:8100` y pulsar «Ver la Pokédex» (desde el Sprint 2 la app abre en la portada) | Se ve el listado; el primero es Bulbasaur N.º 0001 y siguen en orden hasta Mew N.º 0151, cada uno con imagen, nombre y tipos con color | ☐ | ☐ |
 | CA2 | Pulsar la tarjeta de Pikachu | Se abre la ficha de Pikachu N.º 0025 | ☐ | ☐ |
 | CA2 | En la ficha, pulsar «Pokédex» (volver) | Regresa al listado | ☐ | ☐ |
 
@@ -68,6 +68,22 @@ criterio. Marcar cada casilla en las dos columnas.
 | CA3 | Pulsar «Todos» | Vuelve el listado completo (con la búsqueda que haya) | ☐ | ☐ |
 | CA3 | Pulsar «Fuego» dos veces | La segunda vez se quita el filtro | ☐ | ☐ |
 | — | En el celular, deslizar la fila de tipos | Se desplaza de lado sin mover la página | — | ☐ |
+
+## HU-06 · Ver noticias recientes en la portada (SCRUM-14) — Sprint 2
+
+| # | Paso | Resultado esperado | Navegador | Móvil |
+|---|------|--------------------|:---------:|:-----:|
+| CA1 | Abrir `http://localhost:8100` | Se abre la portada con «Noticias recientes»: 6 tarjetas con imagen, fecha, título y resumen | ☐ | ☐ |
+| CA1 | Revisar el orden de las tarjetas | De la más reciente a la más antigua: la primera es «Filtra la Pokédex por tipo» (15 de octubre de 2026) | ☐ | ☐ |
+| CA2 | Pulsar «Ver la Pokédex» | Se abre el listado | ☐ | ☐ |
+| CA2 | En el listado, pulsar «Inicio» | Vuelve a la portada | ☐ | ☐ |
+| — | Con el backend detenido, recargar la portada | Mensaje «No se pudieron cargar las noticias.» y el botón «Ver la Pokédex» sigue ahí | ☐ | ☐ |
+| — | Abrir una dirección que no existe (`/xyz`) | Lleva a la portada | ☐ | ☐ |
+| — | En el celular | Las tarjetas quedan una debajo de otra, sin desbordes | — | ☐ |
+
+El caso «sin noticias» (CA3, mensaje «No hay noticias por ahora») está cubierto por las pruebas
+automáticas (`CriteriosAceptacionHu06Test.ca3…` y `portada.page.spec.ts`), porque la base siempre
+arranca con las noticias de ejemplo.
 
 ## HU-13 · Registrar, editar y eliminar Pokémon (SCRUM-21) — Sprint 2
 
