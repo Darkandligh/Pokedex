@@ -1,4 +1,4 @@
-# Lista de verificación manual — Sprint 1
+# Lista de verificación manual — Sprints 1 y 2
 
 Pruebas para hacer a mano en **navegador de escritorio** y en **celular**, criterio por
 criterio. Marcar cada casilla en las dos columnas.
@@ -55,6 +55,30 @@ criterio. Marcar cada casilla en las dos columnas.
 | CA1 | Volver a Ivysaur y pulsar «Siguiente» | Se abre Venusaur N.º 0003 | ☐ | ☐ |
 | — | En Bulbasaur N.º 0001 | No aparece «Anterior» | ☐ | ☐ |
 | — | En Mew N.º 0151 | No aparece «Siguiente» | ☐ | ☐ |
+
+## HU-13 · Registrar, editar y eliminar Pokémon (SCRUM-21) — Sprint 2
+
+Administrador por defecto: usuario `admin`, clave `pokedex2026` (se cambian con las variables
+`POKEDEX_ADMIN_USUARIO` y `POKEDEX_ADMIN_CLAVE`). Las pruebas usan el N.º 0152 (Chikorita), que no
+está entre los 151 importados.
+
+| # | Paso | Resultado esperado | Navegador | Móvil |
+|---|------|--------------------|:---------:|:-----:|
+| CA5 | En el listado pulsar «Administrar» sin haber iniciado sesión | Se abre «Iniciar sesión» | ☐ | ☐ |
+| CA5 | Ingresar con usuario `admin` y clave `otra` | Mensaje «Usuario o clave incorrectos»; no entra | ☐ | ☐ |
+| CA5 | Abrir directamente `/admin/pokemon/nuevo` en una pestaña nueva | Pide iniciar sesión y, al ingresar, abre el formulario | ☐ | ☐ |
+| — | Ingresar con `admin` / `pokedex2026` | Se abre el panel con los 151 Pokémon y los botones Editar y Eliminar | ☐ | ☐ |
+| CA1 | «+ Registrar Pokémon»: N.º 152, Chikorita, categoría Hoja, habilidad Espesura, 0.9 m, 6.4 kg, tipo Planta, estadísticas 45 49 65 49 65 45 | Aviso «Se registró a Chikorita.»; aparece al final del panel | ☐ | ☐ |
+| CA1 | Abrir `/pokemon/152` | Ficha de Chikorita con imagen oficial, tipo Planta y debilidades Volador, Veneno, Bicho, Fuego, Hielo | ☐ | ☐ |
+| CA2 | En el panel, «Editar» Chikorita: cambiar el nombre a «Chikorita Shiny» y la velocidad a 80 | Aviso «Se guardaron los cambios…»; la ficha muestra el nombre y la velocidad nuevos | ☐ | ☐ |
+| CA2 | Editar un Pokémon y mirar el campo «Número» | Está bloqueado: el número no se puede cambiar | ☐ | ☐ |
+| CA3 | «Registrar» con el formulario vacío | No se guarda; «Revisa los campos marcados» y cada campo obligatorio marcado en rojo | ☐ | ☐ |
+| CA3 | Escribir una estadística de 300 y la URL de imagen `foto.png` | Mensajes «Debe ser menor o igual a 255» y «Debe ser una URL que empiece por http:// o https://» | ☐ | ☐ |
+| CA3 | Registrar con el N.º 1 | Mensaje «Ya existe un Pokémon con el N.º 0001» | ☐ | ☐ |
+| CA3 | Registrar con el nombre «pikachu» (otro número) | Mensaje «Ya existe un Pokémon llamado Pikachu» | ☐ | ☐ |
+| CA4 | «Eliminar» Chikorita y pulsar «Cancelar» | No se elimina | ☐ | ☐ |
+| CA4 | «Eliminar» Chikorita y pulsar «Eliminar» | Aviso «Se eliminó a Chikorita Shiny.»; `/pokemon/152` muestra «Pokémon no encontrado» | ☐ | ☐ |
+| — | Pulsar «Salir» en el panel | Vuelve al listado; «Administrar» vuelve a pedir la clave | ☐ | ☐ |
 
 ## Comprobaciones generales
 
