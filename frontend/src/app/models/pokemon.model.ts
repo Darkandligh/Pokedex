@@ -55,3 +55,29 @@ export interface PokemonDetalle {
   /** Número del Pokémon siguiente, o null si es el último. */
   siguiente: number | null;
 }
+
+/** Datos para registrar o editar un Pokémon (HU-13). */
+export interface PokemonFormulario {
+  /** Obligatorio al registrar; al editar no se puede cambiar. */
+  numero: number | null;
+  nombre: string;
+  descripcion: string;
+  /** Vacía: se usa la imagen oficial del número. */
+  imagenUrl: string;
+  altura: number;
+  peso: number;
+  genero: string;
+  categoria: string;
+  habilidad: string;
+  /** Claves de uno o dos tipos. */
+  tipos: string[];
+  estadisticas: Estadisticas;
+}
+
+/** Respuesta de error de la API: {"estado": 400, "mensaje": "...", "errores": {"nombre": "..."}}. */
+export interface ErrorApi {
+  estado: number;
+  mensaje: string;
+  /** Solo en los errores de validación: campo → mensaje. */
+  errores?: Record<string, string>;
+}

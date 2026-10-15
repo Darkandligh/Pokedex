@@ -1,0 +1,133 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/admin" text="Administración"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ editando() ? 'Editar ' + nombreOriginal() : 'Registrar Pokémon' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (cargando()) {
+    <div class="estado"><ion-spinner name="crescent"></ion-spinner></div>
+  } @else if (noEncontrado()) {
+    <div class="estado"><p class="mensaje">Pokémon no encontrado</p></div>
+  } @else {
+    <form class="contenedor" [formGroup]="formulario" (ngSubmit)="guardar()" novalidate>
+      <h1>
+        @if (editando()) {
+          Editar {{ nombreOriginal() }} <span class="ayuda">{{ formulario.controls.numero.value | numeroPokedex }}</span>
+        } @else {
+          Registrar Pokémon
+        }
+      </h1>
+
+      <h2>Datos</h2>
+      <div class="rejilla-campos">
+        <label class="campo" [class.invalido]="error('numero')">
+          <span>Número</span>
+          <input formControlName="numero" type="number" min="1" max="9999" inputmode="numeric" data-prueba="numero" />
+          @if (error('numero'); as e) { <small class="error">{{ e }}</small> }
+        </label>
+        <label class="campo" [class.invalido]="error('nombre')">
+          <span>Nombre</span>
+          <input formControlName="nombre" maxlength="50" data-prueba="nombre" />
+          @if (error('nombre'); as e) { <small class="error" data-prueba="error-nombre">{{ e }}</small> }
+        </label>
+        <label class="campo" [class.invalido]="error('categoria')">
+          <span>Categoría</span>
+          <input formControlName="categoria" maxlength="80" placeholder="Ratón" data-prueba="categoria" />
+          @if (error('categoria'); as e) { <small class="error">{{ e }}</small> }
+        </label>
+        <label class="campo" [class.invalido]="error('habilidad')">
+          <span>Habilidad</span>
+          <input formControlName="habilidad" maxlength="80" data-prueba="habilidad" />
+          @if (error('habilidad'); as e) { <small class="error">{{ e }}</small> }
+        </label>
+        <label class="campo" [class.invalido]="error('altura')">
+          <span>Altura (m)</span>
+          <input formControlName="altura" type="number" step="0.1" min="0.1" max="100" inputmode="decimal" data-prueba="altura" />
+          @if (error('altura'); as e) { <small class="error">{{ e }}</small> }
+        </label>
+        <label class="campo" [class.invalido]="error('peso')">
+          <span>Peso (kg)</span>
+          <input formControlName="peso" type="number" step="0.1" min="0.1" max="1000" inputmode="decimal" data-prueba="peso" />
+          @if (error('peso'); as e) { <small class="error">{{ e }}</small> }
+        </label>
+        <label class="campo" [class.invalido]="error('genero')">
+          <span>Género</span>
+          <select formControlName="genero" data-prueba="genero">
+            @for (genero of generos; track genero) {
+              <option [value]="genero">{{ genero }}</option>
+            }
+          </select>
+          @if (error('genero'); as e) { <small class="error">{{ e }}</small> }
+        </label>
+      </div>
+
+      <label class="campo" [class.invalido]="error('descripcion')">
+        <span>Descripción</span>
+        <textarea formControlName="descripcion" maxlength="1000" data-prueba="descripcion"></textarea>
+        @if (error('descripcion'); as e) { <small class="error">{{ e }}</small> }
+      </label>
+
+      <label class="campo" [class.invalido]="error('imagenUrl')">
+        <span>URL de la imagen (opcional)</span>
+        <input formControlName="imagenUrl" type="url" maxlength="300" placeholder="Vacío: imagen oficial del número" data-prueba="imagenUrl" />
+        @if (error('imagenUrl'); as e) { <small class="error">{{ e }}</small> }
+      </label>
+
+      <h2>Tipos</h2>
+      <div class="rejilla-campos">
+        <label class="campo" [class.invalido]="error('tipo1')">
+          <span>Tipo principal</span>
+          <select formControlName="tipo1" data-prueba="tipo1">
+            <option value="">Elige un tipo</option>
+            @for (tipo of tipos(); track tipo.clave) {
+              <option [value]="tipo.clave">{{ tipo.nombre }}</option>
+            }
+          </select>
+          @if (error('tipo1'); as e) { <small class="error" data-prueba="error-tipos">{{ e }}</small> }
+        </label>
+        <label class="campo" [class.invalido]="error('tipo2')">
+          <span>Tipo secundario (opcional)</span>
+          <select formControlName="tipo2" data-prueba="tipo2">
+            <option value="">Ninguno</option>
+            @for (tipo of tipos(); track tipo.clave) {
+              <option [value]="tipo.clave">{{ tipo.nombre }}</option>
+            }
+          </select>
+          @if (error('tipo2'); as e) { <small class="error">{{ e }}</small> }
+        </label>
+      </div>
+
+      <h2>Estadísticas base <span class="ayuda">(de 1 a 255)</span></h2>
+      <div class="rejilla-campos" formGroupName="estadisticas">
+        @for (estadistica of estadisticas; track estadistica.clave) {
+          <label class="campo" [class.invalido]="error('estadisticas.' + estadistica.clave)">
+            <span>{{ estadistica.nombre }}</span>
+            <input
+              [formControlName]="estadistica.clave"
+              type="number"
+              min="1"
+              max="255"
+              inputmode="numeric"
+              [attr.data-prueba]="'estadistica-' + estadistica.clave"
+            />
+            @if (error('estadisticas.' + estadistica.clave); as e) { <small class="error">{{ e }}</small> }
+          </label>
+        }
+      </div>
+
+      @if (errorGeneral(); as mensaje) {
+        <p class="aviso error-general" role="alert" data-prueba="error-general">{{ mensaje }}</p>
+      }
+
+      <div class="acciones">
+        <button type="submit" class="boton principal" data-prueba="guardar" [disabled]="enviando()">
+          {{ enviando() ? 'Guardando…' : editando() ? 'Guardar cambios' : 'Registrar' }}
+        </button>
+      </div>
+    </form>
+  }
+</ion-content>

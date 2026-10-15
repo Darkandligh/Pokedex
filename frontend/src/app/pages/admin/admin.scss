@@ -1,0 +1,154 @@
+// Estilos compartidos por las páginas de administración (HU-13).
+
+.contenedor {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px;
+
+  &.angosto {
+    max-width: 420px;
+  }
+}
+
+h1 {
+  margin: 8px 0 4px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+h2 {
+  margin: 24px 0 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.ayuda {
+  margin: 0 0 16px;
+  color: var(--ion-color-medium);
+}
+
+.estado {
+  display: flex;
+  justify-content: center;
+  padding: 48px 16px;
+  text-align: center;
+}
+
+.mensaje {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+
+  > span {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--ion-color-step-250, #c8c8c8);
+    border-radius: 10px;
+    background: var(--ion-background-color, #fff);
+    color: var(--ion-text-color, #000);
+    font: inherit;
+
+    &:focus {
+      outline: 2px solid var(--ion-color-primary);
+      outline-offset: 1px;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+    }
+  }
+
+  textarea {
+    min-height: 90px;
+    resize: vertical;
+  }
+
+  &.invalido input,
+  &.invalido select,
+  &.invalido textarea {
+    border-color: var(--ion-color-danger);
+  }
+}
+
+.error {
+  color: var(--ion-color-danger);
+  font-size: 0.8rem;
+}
+
+.rejilla-campos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  column-gap: 16px;
+}
+
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ion-color-step-100, #e6e6e6);
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+
+  &.principal {
+    background: var(--ion-color-primary);
+    color: var(--ion-color-primary-contrast);
+  }
+
+  &.peligro {
+    background: var(--ion-color-danger);
+    color: var(--ion-color-danger-contrast);
+  }
+
+  &.pequeno {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.aviso {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--ion-color-step-50, #f2f2f2);
+
+  &.error-general {
+    background: color-mix(in srgb, var(--ion-color-danger) 12%, transparent);
+    color: var(--ion-color-danger);
+    font-weight: 600;
+  }
+
+  &.exito {
+    background: color-mix(in srgb, var(--ion-color-success) 15%, transparent);
+  }
+}

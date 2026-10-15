@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/pokedex" text="Pokédex"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Administración</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form class="contenedor angosto" [formGroup]="formulario" (ngSubmit)="ingresar()" novalidate>
+    <h1>Iniciar sesión</h1>
+    <p class="ayuda">Solo un administrador puede registrar, editar y eliminar Pokémon.</p>
+
+    <label class="campo">
+      <span>Usuario</span>
+      <input formControlName="usuario" autocomplete="username" autocapitalize="none" />
+      @if (formulario.controls.usuario.touched && formulario.controls.usuario.invalid) {
+        <small class="error">El usuario es obligatorio</small>
+      }
+    </label>
+
+    <label class="campo">
+      <span>Clave</span>
+      <input formControlName="clave" type="password" autocomplete="current-password" />
+      @if (formulario.controls.clave.touched && formulario.controls.clave.invalid) {
+        <small class="error">La clave es obligatoria</small>
+      }
+    </label>
+
+    @if (error(); as mensaje) {
+      <p class="aviso error-general" role="alert" data-prueba="error-ingreso">{{ mensaje }}</p>
+    }
+
+    <button type="submit" class="boton principal" [disabled]="enviando()">
+      {{ enviando() ? 'Ingresando…' : 'Ingresar' }}
+    </button>
+  </form>
+</ion-content>

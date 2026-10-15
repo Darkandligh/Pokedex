@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { PokemonDetalle, PokemonResumen } from '../models/pokemon.model';
+import { PokemonDetalle, PokemonFormulario, PokemonResumen, Tipo } from '../models/pokemon.model';
 
 /**
  * Acceso a la API de la Pokédex. La app nunca consulta PokéAPI directamente.
@@ -29,5 +29,24 @@ export class PokemonService {
 
   obtenerPorNombre(nombre: string): Observable<PokemonDetalle> {
     return this.http.get<PokemonDetalle>(`${this.url}/nombre/${encodeURIComponent(nombre)}`);
+  }
+
+  /** Tipos en el orden oficial, para el formulario. */
+  listarTipos(): Observable<Tipo[]> {
+    return this.http.get<Tipo[]>(`${environment.apiUrl}/tipos`);
+  }
+
+  // HU-13: requieren la sesión de administrador (la agrega authInterceptor)
+
+  registrar(datos: PokemonFormulario): Observable<PokemonDetalle> {
+    return this.http.post<PokemonDetalle>(this.url, datos);
+  }
+
+  editar(numero: number, datos: PokemonFormulario): Observable<PokemonDetalle> {
+    return this.http.put<PokemonDetalle>(`${this.url}/${numero}`, datos);
+  }
+
+  eliminar(numero: number): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${numero}`);
   }
 }

@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/pokedex" text="Pokédex"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Administración</ion-title>
+    <ion-buttons slot="end">
+      <ion-button data-prueba="salir" (click)="salir()">Salir</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="contenedor">
+    <div class="encabezado">
+      <div>
+        <h1>Pokémon de la Pokédex</h1>
+        <p class="ayuda">Sesión iniciada como {{ auth.usuario() }}.</p>
+      </div>
+      <a class="boton principal" routerLink="/admin/pokemon/nuevo" data-prueba="registrar">+ Registrar Pokémon</a>
+    </div>
+
+    @if (aviso(); as a) {
+      <p class="aviso" [class.exito]="!a.error" [class.error-general]="a.error" role="status" data-prueba="aviso">
+        {{ a.texto }}
+      </p>
+    }
+
+    @switch (estado().tipo) {
+      @case ('cargando') {
+        <div class="estado"><ion-spinner name="crescent"></ion-spinner></div>
+      }
+      @case ('error') {
+        <div class="estado"><p class="mensaje">No se pudo conectar con la API de la Pokédex.</p></div>
+      }
+    }
+
+    @if (estado(); as e) {
+      @if (e.tipo === 'ok') {
+        <ul class="lista">
+          @for (p of e.pokemon; track p.numero) {
+            <li class="fila" data-prueba="fila">
+              <img [src]="p.imagenUrl" [alt]="p.nombre" width="56" height="56" loading="lazy" />
+              <div class="datos">
+                <span class="numero">{{ p.numero | numeroPokedex }}</span>
+                <span class="nombre">{{ p.nombre }}</span>
+                <span class="tipos">
+                  @for (tipo of p.tipos; track tipo.clave) {
+                    <app-tipo-etiqueta [tipo]="tipo" />
+                  }
+                </span>
+              </div>
+              <div class="botones">
+                <a class="boton pequeno" [routerLink]="['/admin/pokemon', p.numero]">Editar</a>
+                <button
+                  type="button"
+                  class="boton pequeno peligro"
+                  data-prueba="eliminar"
+                  [disabled]="eliminando() === p.numero"
+                  (click)="eliminar(p)"
+                >
+                  {{ eliminando() === p.numero ? 'Eliminando…' : 'Eliminar' }}
+                </button>
+              </div>
+            </li>
+          }
+        </ul>
+      }
+    }
+  </div>
+</ion-content>

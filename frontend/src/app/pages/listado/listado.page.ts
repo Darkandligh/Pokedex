@@ -1,7 +1,17 @@
 import { Component, inject, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { IonContent, IonHeader, IonSearchbar, IonSpinner, IonTitle, IonToolbar } from '@ionic/angular';
+import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonRouterLink,
+  IonSearchbar,
+  IonSpinner,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular';
 import { Observable, catchError, distinctUntilChanged, map, of, startWith, switchMap } from 'rxjs';
 
 import { PokemonResumen } from '../../models/pokemon.model';
@@ -25,8 +35,11 @@ export const MENSAJE_SIN_RESULTADOS = 'No se encontraron Pokémon';
   templateUrl: 'listado.page.html',
   styleUrls: ['listado.page.scss'],
   imports: [
+    IonButton,
+    IonButtons,
     IonContent,
     IonHeader,
+    IonRouterLink,
     IonSearchbar,
     IonSpinner,
     IonTitle,
