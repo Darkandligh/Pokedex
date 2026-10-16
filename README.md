@@ -147,21 +147,20 @@ debe completar y marcar.
 ### Sprint 2 · Admin y noticias
 
 Estado del código en las ramas `feature/hu-13-administrar-pokemon`, `feature/hu-04-filtrar-por-tipo`
-y `feature/hu-06-noticias-portada`. Los criterios de la HU-04 y la HU-06 se redactaron a partir del
-objetivo del acta de planeación; hay que confirmarlos contra los de Jira.
+y `feature/hu-06-noticias-portada`. Los criterios son los de cada historia en Jira.
 
 | Historia | Criterio de aceptación comprometido | Hecho | Evidencia (pruebas automáticas) |
 |----------|-------------------------------------|:-----:|---------------------------------|
-| **HU-13** Registrar, editar y eliminar Pokémon · Must · 8 pts (SCRUM-21) | CA1. Registrar un Pokémon | ✅ | `CriteriosAceptacionHu13Test.ca1…`, `formulario.page.spec.ts` |
-| | CA2. Editar un Pokémon | ✅ | `CriteriosAceptacionHu13Test.ca2…`, `formulario.page.spec.ts` |
-| | CA3. Validar los datos | ✅ | `CriteriosAceptacionHu13Test.ca3…`, `formulario.page.spec.ts` |
-| | CA4. Eliminar con confirmación | ✅ | `CriteriosAceptacionHu13Test.ca4…`, `panel.page.spec.ts` |
-| | CA5. Negar el acceso a quien no sea administrador | ✅ | `CriteriosAceptacionHu13Test.ca5…`, `auth.spec.ts` |
-| **HU-04** Filtrar Pokémon por tipo · Should · 5 pts (SCRUM-12) | CA1. Al elegir un tipo veo solo los Pokémon de ese tipo | ✅ | `CriteriosAceptacionHu04Test.ca1…`, `listado.page.spec.ts` |
-| | CA2. El filtro se combina con la búsqueda por nombre o número | ✅ | `CriteriosAceptacionHu04Test.ca2…`, `listado.page.spec.ts` |
-| | CA3. Al quitar el filtro veo todos los Pokémon | ✅ | `CriteriosAceptacionHu04Test.ca3…`, `listado.page.spec.ts` |
+| **HU-13** Registrar, editar y eliminar Pokémon · Must · 8 pts (SCRUM-21) | CA1. Al registrar un Pokémon aparece en el listado y tiene su ficha | ✅ | `CriteriosAceptacionHu13Test.ca1…`, `formulario.page.spec.ts` |
+| | CA2. Al editar un Pokémon su ficha muestra los cambios | ✅ | `CriteriosAceptacionHu13Test.ca2…`, `formulario.page.spec.ts` |
+| | CA3. Con un campo obligatorio vacío o un número repetido veo un error y no se guarda nada | ✅ | `CriteriosAceptacionHu13Test.ca3…`, `formulario.page.spec.ts` |
+| | CA4. Al eliminar y confirmar deja de aparecer y su ficha muestra «Pokémon no encontrado» | ✅ | `CriteriosAceptacionHu13Test.ca4…`, `panel.page.spec.ts` |
+| | CA5. Si no soy administrador se me niega el acceso | ✅ | `CriteriosAceptacionHu13Test.ca5…`, `auth.spec.ts` |
+| **HU-04** Filtrar Pokémon por tipo · Should · 5 pts (SCRUM-12) | CA1. Al elegir un tipo veo solo los Pokémon de ese tipo, ordenados por número | ✅ | `CriteriosAceptacionHu04Test.ca1…`, `listado.page.spec.ts` |
+| | CA2. Con un tipo elegido, la búsqueda por nombre o número se aplica solo sobre ese tipo | ✅ | `CriteriosAceptacionHu04Test.ca2…`, `listado.page.spec.ts` |
+| | CA3. Al quitar el filtro vuelvo a ver el listado completo | ✅ | `CriteriosAceptacionHu04Test.ca3…`, `listado.page.spec.ts` |
 | **HU-06** Ver noticias recientes en la portada · Should · 5 pts (SCRUM-14) | CA1. Veo las noticias de la más reciente a la más antigua, con imagen, fecha, título y resumen | ✅ | `CriteriosAceptacionHu06Test.ca1…`, `portada.page.spec.ts` |
-| | CA2. Desde la portada entro a la Pokédex | ✅ | `portada.page.spec.ts` |
+| | CA2. En la portada veo un acceso a la Pokédex | ✅ | `portada.page.spec.ts` |
 | | CA3. Sin noticias veo «No hay noticias por ahora» | ✅ | `CriteriosAceptacionHu06Test.ca3…`, `portada.page.spec.ts` |
 
 | Tarea | Capa | Hecho | Commit |
